@@ -1,63 +1,81 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const LoanTable = () => {
+  const { userCode } = useParams();
   const navigate = useNavigate();
-  const [barrowerData, setBarroworData] = useState([]);
-  const fetchBarrowerData = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/loans");
-      const data = await response.json();
-      setBarroworData(data);
-    } catch (error) {
-      console.error("veriler alınamadı: ", error);
-    }
-  };
-  const handleNewApplicationRedirect = () => {
-    navigate("/newApplication");
-  };
+  const [borrowerData, setBorrowerData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchBarrowerData();
-  }, []);
+    if (!userCode) {
+      navigate('/login');
+      return;
+    }
+  
+    setLoading(true);
+    fetch(`http://localhost:8080/api/loans/${userCode}`)
+      .then(response => response.json())
+      .then(json => setBorrowerData(json))
+      .catch(error => {
+        console.error('Error fetching loan data:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [userCode, navigate]);
+
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    backgroundColor: '#fff'
+  };
+
+  const thStyle = {
+    backgroundColor: '#fff',
+    padding: '10px',
+    textAlign: 'left',
+  };
+
+  const tdStyle = {
+    padding: '10px',
+    borderBottom: '1px solid #ddd',
+  };
+  
   return (
-    <div>
-      <h1 align="center">Kredi Bilgi Listesi</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "10px",
-        }}
-      >
-        <button onClick={handleNewApplicationRedirect}>Yeni Başvuru</button>
-        <button onClick={fetchBarrowerData}>Müşterileri Listele</button>
-      </div>
-      <table style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th>Ad Soyad</th>
-            <th>Kampanya Adı</th>
-            <th>Kredi Tarihi</th>
-            <th>Kredi Tutarı</th>
-            <th>Kredi Oranı</th>
-          </tr>
-        </thead>
-        <tbody>
-          {barrowerData.map((obj) => {
-            return (
-              <tr key={obj.id}>
-                <td>{obj.nameSurname}</td>
-                <td>{obj.campaignName}</td>
-                <td>{obj.loanAmount}</td>
-                <td>{obj.loanDate}</td>
-                <td>{obj.loanRate}</td>
+    <div >
+      <h1>Kredi Tablosu</h1>
+      <div style={tableStyle}>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          
+          <table border={1}>
+            <thead>
+              <tr>
+                <th style={thStyle}>İsim Soyisim</th>
+                <th>Kampanya Adı</th>
+                <th>Kredi Tarihi</th>
+                <th>Kredi Tutarı</th>
+                <th>Kredi Oranı</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {borrowerData.map(borrower => (
+                <tr key={borrower.id}>
+                  <td style={tdStyle}>{borrower.nameSurname}</td>
+                  <td>{borrower.campaignName}</td>
+                  <td>{borrower.loanDate}</td>
+                  <td>{borrower.loanAmount}</td>
+                  <td>{borrower.loanRate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
+      </div>
     </div>
   );
 };

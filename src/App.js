@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CreateUser from './Register';
 import Login from './Login';
-import NewApplication from './NewApplication';
 import LoanTable from './LoanTable';
 import './App.css';
 
@@ -14,8 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<CreateUser />} />
-            <Route path="/loans" element={<LoanTable />} />
-          </Routes>
+            <Route path="/loans/:userCode" element={<LoanTable />} />          </Routes>
         </header>
       </div>
     </Router>
