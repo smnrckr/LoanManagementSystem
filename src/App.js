@@ -13,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<CreateUser />} />
-            <Route path="/loans/:userCode" element={<LoanTable />} />          </Routes>
+            <Route path="/loans/:userCode" element={<LoanTable />} /></Routes>
         </header>
       </div>
     </Router>
