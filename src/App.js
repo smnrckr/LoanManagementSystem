@@ -1,9 +1,10 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CreateUser from './Register';
-import Login from './Login';
-import LoanTable from './LoanTable';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CreateUser from "./Register";
+import Login from "./Login";
+import LoanTable from "./LoanTable";
+import NewApplication from "./NewApplication";
+import "./App.css";
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<CreateUser />} />
-            <Route path="/loans/:userCode" element={<LoanTable />} /></Routes>
+            <Route path="/loans/:userCode" element={<LoanTable />} />
+            <Route path="/newApplication/:userCode" element={<NewApplication />} />
+          </Routes>
         </header>
       </div>
     </Router>
