@@ -5,6 +5,8 @@ const NewApplication = () => {
   const { userCode } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [campaigns,setCampaigns]=useState([]);
+  const [selectedCampaign, setSelectedCampaign] = useState('');
   const [formData, setFormData] = useState({
     tckn: "",
     phoneNumber: "",
@@ -19,43 +21,23 @@ const NewApplication = () => {
     interestRate: "",
   });
 
-  const [campaign,setCampaign]=useState([]);
-
-  useEffect(()=>{
-    fetch(`/api/campaign`)
-    .then((response)=>response.json())
-    .then((data)=>setCampaign(data));
-  },[]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     setLoading(true);
-    fetch(`api/loans/${userCode}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
+    fetch('http://localhost:8080/api/campaign')
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
         return response.json();
       })
-      .then((data) => {
+      .then((data) => setCampaigns(data))
+      .finally(() => {
         setLoading(false);
-        // Redirect to the loan table after a successful submission
-        navigate(`/api/loans/${userCode}`);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("There was an error submitting the application!", error);
       });
-  };
+  }, [userCode, navigate]);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div>
+      <div>
       <form>
         <input
           type="text"
@@ -125,8 +107,25 @@ const NewApplication = () => {
         />
         
       </form>
-      <button onClick={handleSubmit}></button>
     </div>
+    <div>
+    <select
+        value={selectedCampaign}
+        onChange={(e) => setSelectedCampaign(e.target.value)}>
+        <option value="">Bir Kampanya Seçin</option>
+        {campaigns.map((campaign) => (
+          <option key={campaign.id} value={campaign.id}>
+            {campaign.campaignCode} { }
+          </option>
+        ))}
+      </select>
+      <form>
+        
+      </form>
+      </div>
+    </div>
+    
+
   );
 };
 export default NewApplication;
