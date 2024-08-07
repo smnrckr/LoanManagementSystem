@@ -21,6 +21,7 @@ const NewApplication = () => {
     monthlySalary: "",
     loanAmount: "",
     loanDate: "",
+    birthDate: "",
   });
 
   useEffect(() => {
@@ -58,19 +59,58 @@ const NewApplication = () => {
     }
   }, [selectedTerm, loanOptions]);
 
+  const ageCalculate = () => {
+    const today = new Date();
+    const inputBirthDate = new Date(formData.birthDate); 
+    let age = today.getFullYear() - inputBirthDate.getFullYear();
+    const monthDifference = today.getMonth() - inputBirthDate.getMonth();
+    if (monthDifference < 0 ||(monthDifference === 0 && today.getDate() < inputBirthDate.getDate())) {
+      age--;
+    }
+    if(age<18){
+      alert("18 Yaşından Küçüklere Kredi Verilemez!");
+      return false;
 
+    }
+    return true;
+  };
 
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const isTcknValid = /^\d{11}$/.test(formData.tckn);
+    if (!isTcknValid) {
+      alert("Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!");
+      return;
+    }
 
-    const response = await fetch(`http://localhost:8080/api/newApplication/${userCode}`, {
-        method: 'POST',
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailClient);
+    
+    if (!isEmailValid) {
+      alert("Girdiğiniz Email Formatı Geçersizdir!");
+      return;
+    }
+
+    if (!ageCalculate()) {
+      return;
+    }
+
+    //const formattedDate = new Date(formData.loanDate).toISOString().split('T')[0];
+
+    const response = await fetch(
+      `http://localhost:8080/api/newApplication/${userCode}`,
+      {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formData, campaignName: selectedCampaign, termLoan: selectedTerm, interestRate: rate }),
-    });
+        body: JSON.stringify({
+          ...formData,
+          campaignName: selectedCampaign,
+          termLoan: selectedTerm,
+          interestRate: rate,
+        }),
+      }
+    );
 
     const data = await response.json();
     console.log(data);
@@ -78,21 +118,21 @@ const handleSubmit = async (e) => {
       navigate(`/loans/${userCode}`);
     }
     
-};
+  };
 
   const comboStyle = {
     display: "flex",
-    justifyContent: "flex-end",
     marginBottom: "10px",
-    width: "13%",
+    width: "60%",
     borderCollapse: "collapse",
     padding: "1%",
   };
   const buttonStyle = {
     marginBottom: "10px",
-    width: "15%",
+    width: "60%",
     borderCollapse: "collapse",
   };
+  const uniqueCampaignNames = [...new Set(campaigns.map(campaign => campaign.campaignName))];
 
   if (loading) return <p>Loading...</p>;
 
@@ -101,6 +141,7 @@ const handleSubmit = async (e) => {
       <h1>Kredi Başvurusu</h1>
       <div>
         <form>
+        <label>TC KIMLIK NUMARASI</label>
           <input
             type="text"
             placeholder="TCKN"
@@ -108,6 +149,7 @@ const handleSubmit = async (e) => {
             onChange={(e) => setFormData({ ...formData, tckn: e.target.value })}
             required
           />
+          <label>TELEFON NUMARASI</label>
           <input
             type="text"
             placeholder="Telefon"
@@ -117,15 +159,15 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>AD</label>
           <input
             type="text"
             placeholder="Ad"
             value={formData.name}
-            onChange={(e) =>
-              setFormData({ ...formData, name: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
+          <label>SOYAD</label>
           <input
             type="text"
             placeholder="Soyad"
@@ -135,6 +177,7 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>EMAIL ADRESİ</label>
           <input
             type="email"
             placeholder="Email"
@@ -144,6 +187,7 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>İKAMERGAH ADRESİ</label>
           <input
             type="text"
             placeholder="Adres"
@@ -153,6 +197,7 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>AYLIK GELİR</label>
           <input
             type="number"
             placeholder="Aylık Gelir"
@@ -162,6 +207,7 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>KREDİ TUTARI</label>
           <input
             type="number"
             placeholder="Kredi Tutarı"
@@ -171,8 +217,19 @@ const handleSubmit = async (e) => {
             }
             required
           />
+          <label>DOĞUM TARİHİ</label>
           <input
-            type="text"
+            type="date"
+            placeholder="Doğum Tarihi"
+            value={formData.birthDate}
+            onChange={(e) =>
+              setFormData({ ...formData, birthDate: e.target.value })
+            }
+            required
+          />
+          <label>KREDİ TARİHİ</label>
+          <input
+            type="date"
             placeholder="Kredi Tarihi"
             value={formData.loanDate}
             onChange={(e) =>
@@ -189,9 +246,9 @@ const handleSubmit = async (e) => {
           onChange={(e) => setSelectedCampaign(e.target.value)}
         >
           <option value="">Bir Kampanya Seçin</option>
-          {campaigns.map((campaign) => (
-            <option key={campaign.id} value={campaign.campaignName}>
-              {campaign.campaignName} {}
+          {uniqueCampaignNames.map((campaignName, index) => (
+            <option key={index} value={campaignName}>
+              {campaignName} {}
             </option>
           ))}
         </select>
