@@ -37,7 +37,7 @@ const Login = () => {
 
     return (
         <div>
-            <h1 alignText="center" >Hoşgeldiniz!</h1>
+            <h1>Hoşgeldiniz!</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
