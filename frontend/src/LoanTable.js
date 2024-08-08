@@ -51,14 +51,14 @@ const LoanTable = () => {
   const buttonStyle = {
     justifyContent: "flex-end",
     marginBottom: "10px",
-    width: "20%",
+    width: "22%",
     borderCollapse: "collapse",
   };
 
   return (
     <>
       <div>
-        <h1>Kredi Tablosu</h1>
+        <h1>KREDİLER TABLOSU</h1>
         <div style={buttonStyle}>
           <button onClick={handleNewApplicationRedirect}>
             Kredi Başvurusu

@@ -28,7 +28,7 @@ label {
 }
 
 input {
-  width: 100%; 
+  width: 60%; 
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -36,7 +36,7 @@ input {
 }
 
 button {
-  width: 60%; 
+  width: 64%; 
   padding: 10px;
   background-color: #007BFF;
   color: #fff;

@@ -10,6 +10,7 @@ const NewApplication = () => {
   const [selectedTerm, setSelectedTerm] = useState("");
   const [rate, setRate] = useState("");
   const [loanOptions, setLoanOptions] = useState([]);
+  const [selectedCampaignCode, setSelectedCampaignCode]=useState("");
 
   const [formData, setFormData] = useState({
     tckn: "",
@@ -35,7 +36,8 @@ const NewApplication = () => {
         setLoading(false);
       });
   }, [userCode, navigate]);
-
+  
+/*
   useEffect(() => {
     if (selectedCampaign) {
       const filteredTerms = campaigns
@@ -43,10 +45,36 @@ const NewApplication = () => {
         .map((campaign) => ({
           termLoan: campaign.termLoan,
           interestRate: campaign.interestRate,
+          campaignCode: campaign.campaignCode
         }));
       setLoanOptions(filteredTerms);
     }
   }, [selectedCampaign, campaigns]);
+  */
+
+  useEffect(() => {
+    if (selectedCampaign) {
+      const filteredCampaign = campaigns.find(
+        (campaign) => campaign.campaignName === selectedCampaign
+      );
+
+      if (filteredCampaign) {
+        setSelectedCampaignCode(filteredCampaign.campaignCode);
+
+        const filteredTerms = campaigns
+          .filter((campaign) => campaign.campaignName === selectedCampaign)
+          .map((campaign) => ({
+            termLoan: campaign.termLoan,
+            interestRate: campaign.interestRate,
+            campaignCode: campaign.campaignCode
+          }));
+
+        setLoanOptions(filteredTerms);
+      }
+    }
+  }, [selectedCampaign, campaigns]);
+
+
 
   useEffect(() => {
     if (selectedTerm) {
@@ -108,6 +136,7 @@ const NewApplication = () => {
           campaignName: selectedCampaign,
           termLoan: selectedTerm,
           interestRate: rate,
+          campaignCode: selectedCampaignCode
         }),
       }
     );
@@ -137,7 +166,7 @@ const NewApplication = () => {
 
   return (
     <div>
-      <h1>Kredi Başvurusu</h1>
+      <h1>KREDI BAŞVURUSU</h1>
       <div>
         <form>
         <label>TC KIMLIK NUMARASI</label>
@@ -186,7 +215,7 @@ const NewApplication = () => {
             }
             required
           />
-          <label>İKAMERGAH ADRESİ</label>
+          <label>İKAMETGAH ADRESİ</label>
           <input
             type="text"
             placeholder="Adres"
