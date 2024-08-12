@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import './App.css';
-import useApi from './useApi/useApi';
-import { login } from './apiUrl/apiUrl';
+import useApi from '../useApi/useApi';
+import { login } from '../apiUrl/apiUrl';
+import "./Login.css"
 
 const Login = () => {
     const { post, response } = useApi();
@@ -36,9 +36,9 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h1>Hoşgeldiniz!</h1>
+        <div className='form-container'>
             <form onSubmit={handleSubmit}>
+                <h1>Hoşgeldiniz!</h1>
                 <input
                     type="text"
                     value={tcknVkn}
@@ -54,12 +54,16 @@ const Login = () => {
                     required
                 />
                 <button type="submit">Giriş Yap</button>
+                <br></br>
+                <button onClick={handleRegisterRedirect}>Kayıt Ol</button>
             </form>
+            
             {loginError && (
                 <p className="error">{loginError}</p>
             )}
-            <br></br>
-            <button onClick={handleRegisterRedirect}>Kullanıcı Oluştur</button>
+            
+            
+            
         </div>
     );
 };

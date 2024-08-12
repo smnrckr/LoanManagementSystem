@@ -1,16 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CreateUser from "./Register";
-import Login from "./Login";
-import LoanTable from "./LoanTable";
-import NewApplication from "./NewApplication";
-import "./App.css";
+import CreateUser from "./Register/Register.js";
+import Login from "./Login/Login.js";
+import LoanTable from "./LoanTable/LoanTable.js";
+import NewApplication from "./NewApplication/NewApplication.js";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <header className="App-header">
+      <div >
+        <header>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<CreateUser />} />

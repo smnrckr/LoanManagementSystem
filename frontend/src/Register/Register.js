@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
-import useApi from './useApi/useApi';
-import { register } from './apiUrl/apiUrl';
-import { useNavigate } from 'react-router-dom'; // Yönlendirme için kullan
-
+import useApi from '../useApi/useApi';
+import { register } from '../apiUrl/apiUrl';
+import { useNavigate } from 'react-router-dom'; 
+import './Register.css'; 
 const CreateUser = () => {
     const { post, response, loading } = useApi();
     const navigate =useNavigate();
@@ -49,9 +48,9 @@ const CreateUser = () => {
     };
 
     return (
-        <div>
-            <h1 align="center">REGISTER</h1>
+        <div className="container">
             <form onSubmit={handleSubmit}>
+            <h1>Yeni Kullanıcı Kayıt</h1>
                 <input
                     type="text"
                     value={companyName}
