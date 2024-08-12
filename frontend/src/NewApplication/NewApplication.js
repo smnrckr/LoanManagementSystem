@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./NewApplication.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const NewApplication = () => {
   const { userCode } = useParams();
@@ -22,8 +24,8 @@ const NewApplication = () => {
     address: "",
     monthlySalary: "",
     loanAmount: "",
-    loanDate: "",
-    birthDate: "",
+    loanDate: null,
+    birthDate: null,
   });
 
   useEffect(() => {
@@ -54,10 +56,11 @@ const NewApplication = () => {
             interestRate: campaign.interestRate,
             campaignCode: campaign.campaignCode,
           }));
-
         setLoanOptions(filteredTerms);
       }
     }
+    setSelectedTerm("");
+    setRate("");
   }, [selectedCampaign, campaigns]);
 
   useEffect(() => {
@@ -69,6 +72,7 @@ const NewApplication = () => {
         setRate(termData.interestRate);
       }
     }
+
   }, [selectedTerm, loanOptions]);
 
   const ageCalculate = () => {
@@ -110,8 +114,6 @@ const NewApplication = () => {
       return;
     }
 
-    //const formattedDate = new Date(formData.loanDate).toISOString().split('T')[0];
-
     const response = await fetch(
       `http://localhost:8080/api/newApplication/${userCode}`,
       {
@@ -143,11 +145,11 @@ const NewApplication = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div >
-      <h1>KREDI BAŞVURUSU</h1>
-      <div className="form-section-parent" >
-        <div className="form-section-child" >
-          <form>
+    <div className="newApp-cointainer">
+      <h1 className="newApp-h1"> KREDI BAŞVURUSU</h1>
+      <div className="form-section-parent">
+        <div className="form-section-child">
+          <form className="newApp-form">
             <input
               type="text"
               placeholder="TCKN"
@@ -193,11 +195,6 @@ const NewApplication = () => {
               }
               required
             />
-          </form>
-        </div>
-
-        <div className="form-section-child">
-          <form>
             <input
               type="text"
               placeholder="Adres"
@@ -216,6 +213,11 @@ const NewApplication = () => {
               }
               required
             />
+          </form>
+        </div>
+
+        <div className="form-section-child">
+          <form className="newApp-form">
             <input
               type="number"
               placeholder="Kredi Tutarı"
@@ -225,69 +227,64 @@ const NewApplication = () => {
               }
               required
             />
-            <input
-              type="date"
-              placeholder="Doğum Tarihi"
-              value={formData.birthDate}
-              onChange={(e) =>
-                setFormData({ ...formData, birthDate: e.target.value })
-              }
+            <DatePicker
+              selected={formData.birthDate}
+              placeholderText="Doğum Tarihi"
+              dateFormat="dd/MM/yyyy"
+              onChange={(date) => setFormData({ ...formData, birthDate: date })}
               required
             />
-            <input
-              type="date"
-              placeholder="Kredi Tarihi"
-              value={formData.loanDate}
-              onChange={(e) =>
-                setFormData({ ...formData, loanDate: e.target.value })
-              }
+            <DatePicker
+              selected={formData.loanDate}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Kredi Tarihi"
+              onChange={(date) => setFormData({ ...formData, loanDate: date })}
               required
             />
+
+            <div className="combo-style">
+              <select
+                value={selectedCampaign}
+                onChange={(e) => setSelectedCampaign(e.target.value)}
+              >
+                <option value="">Bir Kampanya Seçin</option>
+                {uniqueCampaignNames.map((campaignName, index) => (
+                  <option key={index} value={campaignName}>
+                    {campaignName}
+                  </option>
+                ))}
+              </select>
+              <>
+                <br></br>
+                <select
+                  value={selectedTerm}
+                  onChange={(e) => setSelectedTerm(e.target.value)}
+                  disabled={!selectedCampaign}
+                >
+                  <option value="">Vade Seçimi Yapın</option>
+                  {loanOptions.map((loanOption, index) => (
+                    <option key={index} value={loanOption.termLoan}>
+                      {loanOption.termLoan}
+                    </option>
+                  ))}
+                </select>
+                <br></br>
+                <input
+                  type="readonly"
+                  value={rate}
+                  readOnly
+                  placeholder="Kredi Oranı"
+                />
+              </>
+            </div>
           </form>
         </div>
       </div>
 
-      <div className="combo-style">
-        <select
-          
-          value={selectedCampaign}
-          onChange={(e) => setSelectedCampaign(e.target.value)}
-        >
-          <option value="">Bir Kampanya Seçin</option>
-          {uniqueCampaignNames.map((campaignName, index) => (
-            <option key={index} value={campaignName}>
-              {campaignName}
-            </option>
-          ))}
-        </select>
-
-        {selectedCampaign && (
-          <>
-            <select
-              
-              value={selectedTerm}
-              onChange={(e) => setSelectedTerm(e.target.value)}
-              disabled={!selectedCampaign}
-            >
-              <option value="">Vade Seçimi Yapın</option>
-              {loanOptions.map((loanOption, index) => (
-                <option key={index} value={loanOption.termLoan}>
-                  {loanOption.termLoan}
-                </option>
-              ))}
-            </select>
-            <input
-              type="readonly"
-              value={rate}
-              readOnly
-              placeholder="Kredi Oranı"
-            />
-          </>
-        )}
-      </div>
-
       <div>
-        <button onClick={handleSubmit}>Başvuru Yap</button>
+        <button className="newApp-button" onClick={handleSubmit}>
+          Başvuru Yap
+        </button>
       </div>
     </div>
   );

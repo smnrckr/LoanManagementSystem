@@ -8,10 +8,10 @@
     height: 100vh; 
 }
 
-form{
+.login-form{
     display: flex;
     flex-direction: column;
-    width: 80%; 
+    width: 100%; 
     padding-right: 3% !important;
     max-width: 300px; 
     padding: 30px;
@@ -31,7 +31,7 @@ input[type="password"],input[type="text"] {
     
 }
 
-button {
+.login-button {
     width: 60%; 
     padding: 10px;
     font-size: 16px;
@@ -40,7 +40,8 @@ button {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin: 10px auto; 
+    display: block;
 }
 
 button:hover {

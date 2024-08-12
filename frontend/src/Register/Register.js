@@ -3,6 +3,7 @@ import useApi from '../useApi/useApi';
 import { register } from '../apiUrl/apiUrl';
 import { useNavigate } from 'react-router-dom'; 
 import './Register.css'; 
+
 const CreateUser = () => {
     const { post, response, loading } = useApi();
     const navigate =useNavigate();
@@ -49,7 +50,7 @@ const CreateUser = () => {
 
     return (
         <div className="container">
-            <form onSubmit={handleSubmit}>
+            <form className='register-form' onSubmit={handleSubmit}>
             <h1>Yeni Kullanıcı Kayıt</h1>
                 <input
                     type="text"
@@ -86,7 +87,7 @@ const CreateUser = () => {
                     placeholder="Parola"
                     required
                 />
-                <button type="submit" disabled={loading}>Kaydet</button>
+                <button className='register-button' type="submit" disabled={loading}>Kaydet</button>
             </form>
             {userCode && (
                 <p>Kullanıcı Kodu: {userCode}</p>

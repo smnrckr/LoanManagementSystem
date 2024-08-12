@@ -1,3 +1,12 @@
+
+.newApp-cointainer{ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
 .form-section-parent {
   display: flex;
   justify-content: center;
@@ -9,15 +18,15 @@
   align-items: center;
   justify-content: center;
   height: 50vh; 
-  margin-right: 20px; /* Add margin to create space between the divs */
+  margin-right: 20px; 
 }
 
 .form-section-child:last-child {
-  margin-right: 0; /* Remove margin for the last child */
+  margin-right: 10px; 
 }
 
 
-form {
+.newApp-form {
   display: flex;
   flex-direction: column;
   width: 80%; 
@@ -38,7 +47,7 @@ input[type="text"], input[type="number"], input[type="date"], input[type="email"
 }
 
 select {
-  width: 10%;
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -46,7 +55,7 @@ select {
 }
 
 input[readonly] {
-  width: 8.7%;
+  width: 90%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -54,10 +63,8 @@ input[readonly] {
   font-size: 14px;
 }
 
-button {
-  display: block;
-  flex-direction: column;
-  width: 10%; 
+.newApp-button {
+  width: 100%; 
   padding: 10px;
   font-size: 16px;
   color: white;
@@ -65,19 +72,19 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 button:hover {
   background-color: #0056b3;
 }
 
-h1 {
+.newApp-h1 {
   text-align: center;
   color: #013771;
 }
 
 .combo-style {
+  width: 110%; 
   display: flex;
   flex-direction: column;
   align-items: center;

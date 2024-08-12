@@ -37,7 +37,7 @@ const Login = () => {
 
     return (
         <div className='form-container'>
-            <form onSubmit={handleSubmit}>
+            <form className='login-form' onSubmit={handleSubmit}>
                 <h1>Hoşgeldiniz!</h1>
                 <input
                     type="text"
@@ -53,9 +53,9 @@ const Login = () => {
                     placeholder="Parola"
                     required
                 />
-                <button type="submit">Giriş Yap</button>
+                <button className='login-button' type="submit">Giriş Yap</button>
                 <br></br>
-                <button onClick={handleRegisterRedirect}>Kayıt Ol</button>
+                <button className='login-button' onClick={handleRegisterRedirect}>Kayıt Ol</button>
             </form>
             
             {loginError && (

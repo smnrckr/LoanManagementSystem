@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import './LoanTable.css'; 
+import "./LoanTable.css";
 
 const LoanTable = () => {
   const { userCode } = useParams();
@@ -31,53 +31,60 @@ const LoanTable = () => {
   };
 
   return (
-    <div className="table-container">
-      <h1>KREDI TABLOSU</h1>
-      <div className="button-container">
-        <button onClick={handleNewApplicationRedirect}>
-          Kredi Başvurusu
-        </button>
-      </div>
-      {loading ? (
-        <div className="loading">Loading...</div>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>TCKN</th>
-              <th>Telefon</th>
-              <th>İsim</th>
-              <th>Soyisim</th>
-              <th>Email</th>
-              <th>Adres</th>
-              <th>Aylık Gelir</th>
-              <th>Kampanya Adı</th>
-              <th>Kredi Tarihi</th>
-              <th>Kredi Tutarı</th>
-              <th>Kredi Oranı</th>
-              <th>Vade Süresi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {borrowerData.map((borrower) => (
-              <tr key={borrower.id}>
-                <td>{borrower.tckn}</td>
-                <td>{borrower.phoneNumber}</td>
-                <td>{borrower.name}</td>
-                <td>{borrower.surname}</td>
-                <td>{borrower.emailClient}</td>
-                <td>{borrower.address}</td>
-                <td>{borrower.monthlySalary}</td>
-                <td>{borrower.campaignName}</td>
-                <td>{borrower.loanDate}</td>
-                <td>{borrower.loanAmount}</td>
-                <td>{borrower.interestRate}</td>
-                <td>{borrower.termLoan}</td>
+    <div className="page-container">
+
+      <div className="table-container">
+      <h1 className="loan-h1">KREDILER TABLOSU</h1>
+        <div className="loan-button-container">
+          <button
+            className="loan-button"
+            onClick={handleNewApplicationRedirect}
+          >
+            Kredi Başvurusu
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="loading">Loading...</div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>TCKN</th>
+                <th>Telefon</th>
+                <th>İsim</th>
+                <th>Soyisim</th>
+                <th>Email</th>
+                <th>Adres</th>
+                <th>Aylık Gelir</th>
+                <th>Kampanya Adı</th>
+                <th>Kredi Tarihi</th>
+                <th>Kredi Tutarı</th>
+                <th>Kredi Oranı</th>
+                <th>Vade Süresi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {borrowerData.map((borrower) => (
+                <tr key={borrower.id}>
+                  <td>{borrower.tckn}</td>
+                  <td>{borrower.phoneNumber}</td>
+                  <td>{borrower.name}</td>
+                  <td>{borrower.surname}</td>
+                  <td>{borrower.emailClient}</td>
+                  <td>{borrower.address}</td>
+                  <td>{borrower.monthlySalary}</td>
+                  <td>{borrower.campaignName}</td>
+                  <td>{borrower.loanDate}</td>
+                  <td>{borrower.loanAmount}</td>
+                  <td>{borrower.interestRate}</td>
+                  <td>{borrower.termLoan}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };
