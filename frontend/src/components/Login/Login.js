@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import useApi from '../useApi/useApi';
-import { login } from '../apiUrl/apiUrl';
+import useApi from '../../useApi/useApi';
+import { login } from '../../apiUrl/apiUrl';
 import "./Login.css"
 
 const Login = () => {
@@ -36,7 +36,7 @@ const Login = () => {
     };
 
     return (
-        <div className='form-container'>
+        <div className='login-container'>
             <form className='login-form' onSubmit={handleSubmit}>
                 <h1>Hoşgeldiniz!</h1>
                 <input

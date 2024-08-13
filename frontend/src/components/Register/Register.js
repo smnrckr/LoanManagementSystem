@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useApi from '../useApi/useApi';
-import { register } from '../apiUrl/apiUrl';
+import useApi from '../../useApi/useApi';
+import { register } from '../../apiUrl/apiUrl';
 import { useNavigate } from 'react-router-dom'; 
 import './Register.css'; 
 
@@ -49,7 +49,7 @@ const CreateUser = () => {
     };
 
     return (
-        <div className="container">
+        <div className="register-container">
             <form className='register-form' onSubmit={handleSubmit}>
             <h1>Yeni Kullanıcı Kayıt</h1>
                 <input

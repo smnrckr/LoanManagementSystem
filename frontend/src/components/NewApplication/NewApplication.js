@@ -72,7 +72,6 @@ const NewApplication = () => {
         setRate(termData.interestRate);
       }
     }
-
   }, [selectedTerm, loanOptions]);
 
   const ageCalculate = () => {
@@ -145,11 +144,14 @@ const NewApplication = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="newApp-cointainer">
-      <h1 className="newApp-h1"> KREDI BAŞVURUSU</h1>
+    <div className="new-app-cointainer">
+      <h1> KREDI BAŞVURUSU</h1>
       <div className="form-section-parent">
         <div className="form-section-child">
-          <form className="newApp-form">
+          <form className="new-app-form">
+            <label style={{ textAlign: "center", marginBottom: "20px" }}>
+              Müşteri Bilgileri
+            </label>
             <input
               type="text"
               placeholder="TCKN"
@@ -217,7 +219,10 @@ const NewApplication = () => {
         </div>
 
         <div className="form-section-child">
-          <form className="newApp-form">
+          <form className="new-app-form">
+            <label style={{ textAlign: "center", marginBottom: "20px" }}>
+              Kredi Bilgileri
+            </label>
             <input
               type="number"
               placeholder="Kredi Tutarı"
@@ -255,7 +260,6 @@ const NewApplication = () => {
                 ))}
               </select>
               <>
-                <br></br>
                 <select
                   value={selectedTerm}
                   onChange={(e) => setSelectedTerm(e.target.value)}
@@ -268,12 +272,13 @@ const NewApplication = () => {
                     </option>
                   ))}
                 </select>
-                <br></br>
+                
                 <input
                   type="readonly"
                   value={rate}
                   readOnly
                   placeholder="Kredi Oranı"
+                  disabled={!selectedTerm}
                 />
               </>
             </div>
@@ -282,7 +287,7 @@ const NewApplication = () => {
       </div>
 
       <div>
-        <button className="newApp-button" onClick={handleSubmit}>
+        <button className="new-app-button" onClick={handleSubmit}>
           Başvuru Yap
         </button>
       </div>
