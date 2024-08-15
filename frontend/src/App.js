@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CreateUser from "./components/Register/Register.js";
-import Login from "./components/Login/Login.js";
-import LoanTable from "./components/LoanTable/LoanTable.js";
-import NewApplication from "./components/NewApplication/NewApplication.js";
+import CreateUser from "./pages/Register/Register.js";
+import Login from "./pages/Login/Login.js";
+import LoanTable from "./pages/LoanTable/LoanTable.js";
+import NewApplication from "./pages/NewApplication/NewApplication.js";
+
 
 function App() {
   return (

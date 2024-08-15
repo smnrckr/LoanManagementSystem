@@ -1,4 +1,5 @@
-import { BASE_API_URL } from '../apiUrl/apiUrl';
+import { BASE_API_URL } from  './apiUrl';
+
 import { useFetch } from 'use-http';
 
 const useApi = (options, triggerDependency) =>
