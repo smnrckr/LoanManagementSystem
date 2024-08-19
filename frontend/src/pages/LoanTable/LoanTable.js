@@ -32,9 +32,8 @@ const LoanTable = () => {
 
   return (
     <div className="loan-page-container">
-      <div className="table-container">
-        <h1>KREDILER TABLOSU</h1>
-        <div className="loan-button-container">
+      <h1>KREDILER TABLOSU</h1>
+      <div className="loan-button-container">
           <button
             className="loan-button"
             onClick={handleNewApplicationRedirect}
@@ -42,7 +41,7 @@ const LoanTable = () => {
             Kredi Başvurusu
           </button>
         </div>
-
+      <div className="table-container">
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (

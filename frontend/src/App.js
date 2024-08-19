@@ -4,6 +4,7 @@ import CreateUser from "./pages/Register/Register.js";
 import Login from "./pages/Login/Login.js";
 import LoanTable from "./pages/LoanTable/LoanTable.js";
 import NewApplication from "./pages/NewApplication/NewApplication.js";
+import AdminOperations from "./pages/Admin/Admin.js";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/register" element={<CreateUser />} />
             <Route path="/loans/:userCode" element={<LoanTable />} />
             <Route path="/newApplication/:userCode" element={<NewApplication />} />
+            <Route path="/user-campaign-table" element={<AdminOperations/>}/>
           </Routes>
         </header>
       </div>

@@ -4,12 +4,6 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 20px;
-}
-
-h1 {
-  color: #013771;
-  margin-bottom: 20px;
 }
 
 .register-form {

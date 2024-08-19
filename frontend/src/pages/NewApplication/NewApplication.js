@@ -272,7 +272,7 @@ const NewApplication = () => {
                     </option>
                   ))}
                 </select>
-                
+
                 <input
                   type="readonly"
                   value={rate}

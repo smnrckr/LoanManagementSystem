@@ -13,7 +13,6 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
 }
 
 table {
@@ -28,14 +27,12 @@ td {
   text-align: left;
 }
 
-.loan-button-container {
-  position: absolute;
+ .loan-button-container {
   bottom: 82%;
-  right: 10px;
+  margin-left:72%;
 }
 
 .loan-button {
-  width: 100%;
   padding: 10px;
   font-size: 16px;
   color: white;
@@ -43,6 +40,6 @@ td {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin-right: 6px;
+  
 }
-
-
