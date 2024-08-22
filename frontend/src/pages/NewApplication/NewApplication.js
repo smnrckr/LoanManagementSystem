@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./NewApplication.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Alert from "../../components/alert/Alert";
 
 const NewApplication = () => {
   const { userCode } = useParams();
@@ -14,6 +15,11 @@ const NewApplication = () => {
   const [rate, setRate] = useState("");
   const [loanOptions, setLoanOptions] = useState([]);
   const [selectedCampaignCode, setSelectedCampaignCode] = useState("");
+  const [alert, setAlert] = useState({ message: '', type: '' });
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState(''); // 'success' or 'error'
 
   const [formData, setFormData] = useState({
     tckn: "",
@@ -28,9 +34,42 @@ const NewApplication = () => {
     birthDate: null,
   });
 
+  const validateForm = () => {
+    const isTcknValid = /^\d{11}$/.test(formData.tckn);
+    if (!isTcknValid) {
+      setAlertMessage('Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!');
+      setAlertType('error');
+      setShowAlert(true);
+      return;
+    }
+
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailClient);
+    if (!isEmailValid) {
+      setAlertMessage('Girdiğiniz Email Formatı Geçersizdir!');
+      setAlertType('error');
+      setShowAlert(true);
+      return;
+    }
+
+    // Proceed with form submission or other actions
+    return(true);
+  };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  //kampanya bilgilerinin alınması için
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/api/campaign")
+    fetch("http://localhost:8080/api/campaigns")
       .then((response) => {
         return response.json();
       })
@@ -40,6 +79,7 @@ const NewApplication = () => {
       });
   }, [userCode, navigate]);
 
+  //comboboxa atılacak kampanya isimlerinin seçilmesiyle detayların filtrelenmesi
   useEffect(() => {
     if (selectedCampaign) {
       const filteredCampaign = campaigns.find(
@@ -63,6 +103,7 @@ const NewApplication = () => {
     setRate("");
   }, [selectedCampaign, campaigns]);
 
+  //vadenin filtrelenmesi ve vadeye göre otomaik dolacak faiz oranının atanması
   useEffect(() => {
     if (selectedTerm) {
       const termData = loanOptions.find(
@@ -92,27 +133,46 @@ const NewApplication = () => {
     return true;
   };
 
+  const formatCurrency = (number) => {
+    const rawValue = number.replace(/[^\d,]/g, "");
+    const [integerPart, decimalPart] = rawValue.split(",");
+
+    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    const formattedDecimal = decimalPart ? decimalPart.slice(0, 2) : "";
+
+    return formattedDecimal
+      ? `${formattedInteger},${formattedDecimal}`
+      : formattedInteger;
+  };
+
+  const handleSalaryChange = (e) => {
+    const formattedValue = formatCurrency(e.target.value);
+    setFormData({ ...formData, monthlySalary: formattedValue });
+  };
+
+  const handleLoanAmountChange = (e) => {
+    const formattedValue = formatCurrency(e.target.value);
+    setFormData({ ...formData, loanAmount: formattedValue });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isTcknValid = /^\d{11}$/.test(formData.tckn);
-    if (!isTcknValid) {
-      alert("Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!");
+    if (!validateForm()) {
+      // If validation fails, don't submit the form
       return;
     }
-
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-      formData.emailClient
-    );
-
-    if (!isEmailValid) {
-      alert("Girdiğiniz Email Formatı Geçersizdir!");
-      return;
-    }
-
     if (!ageCalculate()) {
       return;
     }
-
+    const formattedLoanDate = formatDate(formData.loanDate);
+    const formattedBirthDate = formatDate(formData.birthDate);
+    const unformattedSalary = parseFloat(
+      formData.monthlySalary.replace(/\./g, "").replace(",", ".")
+    );
+    const unformattedLoanAmount = parseFloat(
+      formData.loanAmount.replace(/\./g, "").replace(",", ".")
+    );
     const response = await fetch(
       `http://localhost:8080/api/newApplication/${userCode}`,
       {
@@ -122,10 +182,14 @@ const NewApplication = () => {
         },
         body: JSON.stringify({
           ...formData,
+          loanDate: formattedLoanDate,
+          birthDate: formattedBirthDate,
           campaignName: selectedCampaign,
           termLoan: selectedTerm,
           interestRate: rate,
           campaignCode: selectedCampaignCode,
+          monthlySalary: unformattedSalary,
+          loanAmount: unformattedLoanAmount,
         }),
       }
     );
@@ -137,6 +201,8 @@ const NewApplication = () => {
     }
   };
 
+  //kampanya isilerinin bir kere çıkması için
+  //service
   const uniqueCampaignNames = [
     ...new Set(campaigns.map((campaign) => campaign.campaignName)),
   ];
@@ -145,13 +211,22 @@ const NewApplication = () => {
 
   return (
     <div className="new-app-cointainer">
+      {showAlert && (
+        <Alert message={alertMessage} type={alertType} onClose={handleCloseAlert} />
+      )}
       <h1> KREDI BAŞVURUSU</h1>
       <div className="form-section-parent">
         <div className="form-section-child">
           <form className="new-app-form">
-            <label style={{ textAlign: "center", marginBottom: "20px" }}>
+            <h3
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                color: "#013771",
+              }}
+            >
               Müşteri Bilgileri
-            </label>
+            </h3>
             <input
               type="text"
               placeholder="TCKN"
@@ -207,12 +282,10 @@ const NewApplication = () => {
               required
             />
             <input
-              type="number"
+              type="text"
               placeholder="Aylık Gelir"
               value={formData.monthlySalary}
-              onChange={(e) =>
-                setFormData({ ...formData, monthlySalary: e.target.value })
-              }
+              onChange={handleSalaryChange}
               required
             />
           </form>
@@ -220,16 +293,20 @@ const NewApplication = () => {
 
         <div className="form-section-child">
           <form className="new-app-form">
-            <label style={{ textAlign: "center", marginBottom: "20px" }}>
+            <h3
+              style={{
+                textAlign: "center",
+                marginBottom: "20px",
+                color: "#013771",
+              }}
+            >
               Kredi Bilgileri
-            </label>
+            </h3>
             <input
-              type="number"
+              type="text"
               placeholder="Kredi Tutarı"
               value={formData.loanAmount}
-              onChange={(e) =>
-                setFormData({ ...formData, loanAmount: e.target.value })
-              }
+              onChange={handleLoanAmountChange}
               required
             />
             <DatePicker

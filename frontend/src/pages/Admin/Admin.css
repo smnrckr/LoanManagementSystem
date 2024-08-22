@@ -60,13 +60,16 @@
     margin-top: 10px;
   }
   
-  select {
+  .admin-select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
     margin-bottom: 15px;
     margin-left: 5%;
-    text-align: center;
 
+  }
+  .disabled {
+    pointer-events: none;
+    opacity: 0.5; /* Lower opacity to visually indicate that the divs are disabled */
   }

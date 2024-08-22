@@ -32,13 +32,14 @@ const LoanTable = () => {
 
   return (
     <div className="loan-page-container">
-      <h1>KREDILER TABLOSU</h1>
+      <h1>Başvuru Listesi</h1>
       <div className="loan-button-container">
           <button
             className="loan-button"
             onClick={handleNewApplicationRedirect}
+            style={{marginBottom:"10px"}}
           >
-            Kredi Başvurusu
+            + Yeni başvuru
           </button>
         </div>
       <div className="table-container">
@@ -71,10 +72,10 @@ const LoanTable = () => {
                   <td>{borrower.surname}</td>
                   <td>{borrower.emailClient}</td>
                   <td>{borrower.address}</td>
-                  <td>{borrower.monthlySalary}</td>
+                  <td>{borrower.monthlySalary.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
                   <td>{borrower.campaignName}</td>
                   <td>{borrower.loanDate}</td>
-                  <td>{borrower.loanAmount}</td>
+                  <td>{borrower.loanAmount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
                   <td>{borrower.interestRate}</td>
                   <td>{borrower.termLoan}</td>
                 </tr>

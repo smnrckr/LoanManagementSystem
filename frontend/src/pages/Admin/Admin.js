@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
+import "../../components/layout/Header.css";
 
 const AdminOperations = () => {
   const [userCampaignDetails, setUserCampaignDetails] = useState([]);
@@ -10,6 +11,7 @@ const AdminOperations = () => {
   const [selectedCampaignCode, setSelectedCampaignCode] = useState("");
   const [campaigns, setCampaigns] = useState([]);
   const [users, setUsers] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(true); 
 
   const navigate = useNavigate();
 
@@ -54,7 +56,7 @@ const AdminOperations = () => {
   }, [navigate]);
 
   //verileri backende göndermek için
-  const handleNewRecord = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
       `http://localhost:8080/api/user-campaign-table`,
@@ -72,47 +74,22 @@ const AdminOperations = () => {
     if (response.ok) {
       alert("Kullanıcı kaydedildi");
       setTimeout(() => {
-        window.location.reload(); 
+        window.location.reload();
       }, 500);
     }
   };
-  //unique kampanya isimleri için
-  const uniqueCampaigns = campaigns.reduce((acc, campaign) => {
-    const existingCampaign = acc.find(
-      (c) => c.campaignCode === campaign.campaignCode
-    );
-    if (!existingCampaign) {
-      acc.push(campaign);
-    }
-    return acc;
-  }, []);
-
-  const sortedUniqueCampaigns = uniqueCampaigns.sort((a, b) =>
-    a.campaignName.localeCompare(b.campaignName)
-  );
-
-  //unique kullanıcı isimleri için
-  const uniqueUsers = users.reduce((acc, user) => {
-    const existingUser = acc.find((c) => c.userCode === user.userCode);
-    if (!existingUser) {
-      acc.push(user);
-    }
-    return acc;
-  }, []);
-  const sortedUniqueUsers = uniqueUsers.sort((a, b) =>
-    a.companyName.localeCompare(b.companyName)
-  );
 
   //row seçip id'i almak için
-  const selectRow = (index) => {
-    setSelectedRow(index);
-  };
-
-  useEffect(() => {
-    if (selectedRow !== null) {
-      console.log("Selected rows UserCapaign id:", selectedRow);
+  const selectRow = (id) => {
+    if (id === selectedRow) {
+      setSelectedRow("");
+    } else {
+      setSelectedRow(id);
+      setIsDisabled(true);
+      setSelectedCampaignCode("");
+      setSelectedUserCode("");
     }
-  }, [selectedRow]);
+  };
 
   //delete butonu
   const handleDelete = (id) => {
@@ -122,34 +99,39 @@ const AdminOperations = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id })
+      body: JSON.stringify({ id }),
     }).then(() => {
       const updatedCampaignDetails = [...userCampaignDetails].filter(
         (i) => i.id !== selectedRow
       );
       setUserCampaignDetails(updatedCampaignDetails);
       alert("Kullanıcı başarıyla silindi.");
-      setTimeout(() => {
-        window.location.reload(); 
-      }, 500);
-
     });
   };
-
-
+  //yeni kayıta basınca olacak enabled disabled işlemleri
+  const handleNewRecord = () => {
+    setIsDisabled(false);
+  };
 
   return (
     <div className="user-campaign-page-container">
       <h1>Kullanıcı Kampanya Bilgileri</h1>
       <div className="user-campaign-button-container">
-        <button className="user-campaign-button">Yeni Kayıt</button>
-        {/*yeni kayıt basınca sil, sile basınca yeni kayıt enable olacak şekilde yaz*/}
         <button
-  className="user-campaign-button"
-  onClick={() => handleDelete(selectedRow)} // Make sure selectedRow is just an ID
->
-  Sil
-</button>      </div>
+          className={`user-campaign-button ${selectedRow ? "disabled" : ""}`}
+          onClick={handleNewRecord}
+        >
+          Yeni Kayıt
+        </button>
+        <button
+          className={`user-campaign-button ${
+            !selectedRow || !isDisabled ? "disabled" : ""
+          }`}
+          onClick={() => handleDelete(selectedRow)}
+        >
+          Sil
+        </button>
+      </div>
       <div className="user-campaign-container">
         {loading ? (
           <div className="loading">Loading...</div>
@@ -158,13 +140,13 @@ const AdminOperations = () => {
             <thead>
               <tr>
                 <th>Kullanıcı Kodu</th>
-                <th>Kullanıcı İsmi</th>
+                <th>Kullanıcı Adı</th>
                 <th>Kampanya Kodu</th>
-                <th>Kampanya İsmi</th>
+                <th>Kampanya Adı</th>
               </tr>
             </thead>
             <tbody>
-              {userCampaignDetails.map((details, index) => (
+              {userCampaignDetails.map((details) => (
                 <tr
                   key={details.id}
                   onClick={() => selectRow(details.id)}
@@ -180,26 +162,31 @@ const AdminOperations = () => {
           </table>
         )}
       </div>
-      <br></br>
-      <div className="user-campaign-container">
-        <div className="admin-combo-style">
+      <div className="user-campaign-container" style={{ marginTop: "20px" }}>
+        <div
+          className={`admin-combo-style ${
+            isDisabled || selectedRow ? "disabled" : ""
+          }`}
+        >
           <select
+            className="admin-select"
             value={selectedUserCode}
             onChange={(e) => setSelectedUserCode(e.target.value)}
           >
             <option value="">Kullanıcı</option>
-            {sortedUniqueUsers.map((user, index) => (
+            {users.map((user, index) => (
               <option key={index} value={user.userCode}>
                 {user.companyName} - {user.userCode}
               </option>
             ))}
           </select>
           <select
+            className="admin-select"
             value={selectedCampaignCode}
             onChange={(e) => setSelectedCampaignCode(e.target.value)}
           >
             <option value="">Kampanya</option>
-            {sortedUniqueCampaigns.map((campaign, index) => (
+            {campaigns.map((campaign, index) => (
               <option key={index} value={campaign.campaignCode}>
                 {campaign.campaignName} - {campaign.campaignCode}
               </option>
@@ -207,7 +194,7 @@ const AdminOperations = () => {
           </select>
           <button
             className="user-campaign-button"
-            onClick={handleNewRecord}
+            onClick={handleSubmit}
             style={{ marginLeft: "5%", marginBottom: "auto" }}
           >
             Kaydet

@@ -14,6 +14,20 @@ const CreateUser = () => {
     
       const handleSubmit = async (event) => {
         event.preventDefault();
+        const isTcknValid = /^\d{11}$/.test(tcknVkn);
+        if (!isTcknValid) {
+          alert("Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!");
+          return;
+        }
+    
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+          email
+        );
+    
+        if (!isEmailValid) {
+          alert("Girdiğiniz Email Formatı Geçersizdir!");
+          return;
+        }
         try {
           const response = await fetch(`http://localhost:8080/api/register`, {
             method: "POST",
@@ -46,7 +60,7 @@ const CreateUser = () => {
       return (
         <div className="register-container">
           <form className='register-form' onSubmit={handleSubmit}>
-            <h1>Yeni Kullanıcı Kayıt</h1>
+            <h1>Üye Ol</h1>
             <input
               type="text"
               value={companyName}
@@ -58,7 +72,7 @@ const CreateUser = () => {
               type="text"
               value={tcknVkn}
               onChange={(e) => setTcknVkn(e.target.value)}
-              placeholder="TCKN/VKN"
+              placeholder="TCKN"
               required
             />
             <input
@@ -72,7 +86,7 @@ const CreateUser = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              placeholder="E-Mail"
               required
             />
             <input

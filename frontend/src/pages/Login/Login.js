@@ -52,7 +52,7 @@ const handleRegisterRedirect = () => {
   return (
     <div className='login-container'>
       <form className='login-form' onSubmit={handleSubmit}>
-        <h1>Hoşgeldiniz!</h1>
+        <h1>Kullanıcı Girişi</h1>
         <input
           type="text"
           value={tcknVkn}
@@ -69,7 +69,7 @@ const handleRegisterRedirect = () => {
         />
         <button className='login-button' type="submit">Giriş Yap</button>
         <br />
-        <button className='login-button' onClick={handleRegisterRedirect}>Kayıt Ol</button>
+        <button className='login-button' onClick={handleRegisterRedirect}>Kullanıcı Oluştur</button>
       </form>
       
       {loginError && (
