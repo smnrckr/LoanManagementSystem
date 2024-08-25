@@ -11,6 +11,7 @@ const NewApplication = () => {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaign] = useState("");
+  const [selectedCampaignName, setSelectedCampaignName] = useState("");
   const [selectedTerm, setSelectedTerm] = useState("");
   const [rate, setRate] = useState("");
   const [loanOptions, setLoanOptions] = useState([]);
@@ -18,7 +19,7 @@ const NewApplication = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState(''); 
-  
+
   const [formData, setFormData] = useState({
     tckn: "",
     phoneNumber: "",
@@ -49,7 +50,6 @@ const NewApplication = () => {
       return;
     }
 
-    // Proceed with form submission or other actions
     return(true);
   };
 
@@ -59,59 +59,105 @@ const NewApplication = () => {
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const month = String(d.getMonth() + 1).padStart(2, "0"); 
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
   };
 
-  //kampanya bilgilerinin alınması için
+  // //kampanya bilgilerinin alınması için
+  // useEffect(() => {
+  //   setLoading(true);
+  //   fetch(`http://localhost:8080/api/user/${userCode}/campaigns`)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => setCampaigns(data))
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // }, [userCode, navigate]);
+
+  // //comboboxa atılacak kampanya isimlerinin seçilmesiyle detayların filtrelenmesi
+  // useEffect(() => {
+  //   if (selectedCampaign) {
+  //     const filteredCampaign = campaigns.find(
+  //       (campaign) => campaign.campaignName === selectedCampaign
+  //     );
+
+  //     if (filteredCampaign) {
+  //       setSelectedCampaignCode(filteredCampaign.campaignCode);
+
+  //       const filteredTerms = campaigns
+  //         .filter((campaign) => campaign.campaignName === selectedCampaign)
+  //         .map((campaign) => ({
+  //           termLoan: campaign.termLoan,
+  //           interestRate: campaign.interestRate,
+  //           campaignCode: campaign.campaignCode,
+  //         }));
+  //       setLoanOptions(filteredTerms);
+  //     }
+  //   }
+  //   setSelectedTerm("");
+  //   setRate("");
+  // }, [selectedCampaign, campaigns]);
+
+  // //vadenin filtrelenmesi ve vadeye göre otomaik dolacak faiz oranının atanması
+  // useEffect(() => {
+  //   if (selectedTerm) {
+  //     const termData = loanOptions.find(
+  //       (loanOptions) => loanOptions.termLoan === parseFloat(selectedTerm)
+  //     );
+  //     if (termData) {
+  //       setRate(termData.interestRate);
+  //     }
+  //   }
+  // }, [selectedTerm, loanOptions]);
+
   useEffect(() => {
     setLoading(true);
     fetch(`http://localhost:8080/api/user/${userCode}/campaigns`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => setCampaigns(data))
+      .then((response) => response.json())
+      .then((data) => setCampaigns(data.dataList))
       .finally(() => {
         setLoading(false);
       });
-  }, [userCode, navigate]);
+  }, [userCode]);
 
-  //comboboxa atılacak kampanya isimlerinin seçilmesiyle detayların filtrelenmesi
   useEffect(() => {
+    console.log('Fetching loan options for:', selectedCampaign);
     if (selectedCampaign) {
-      const filteredCampaign = campaigns.find(
-        (campaign) => campaign.campaignName === selectedCampaign
-      );
-
-      if (filteredCampaign) {
-        setSelectedCampaignCode(filteredCampaign.campaignCode);
-
-        const filteredTerms = campaigns
-          .filter((campaign) => campaign.campaignName === selectedCampaign)
-          .map((campaign) => ({
-            termLoan: campaign.termLoan,
-            interestRate: campaign.interestRate,
-            campaignCode: campaign.campaignCode,
-          }));
-        setLoanOptions(filteredTerms);
-      }
+      setLoading(true);
+      fetch(`http://localhost:8080/api/details/${selectedCampaign}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Loan options fetched:', data.dataList);
+          const campaignName = data.dataList[1].campaignName; 
+          setSelectedCampaignName(campaignName);
+          setLoanOptions(data.dataList); 
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-    setSelectedTerm("");
-    setRate("");
-  }, [selectedCampaign, campaigns]);
+  }, [selectedCampaign, selectedCampaignName]);
 
-  //vadenin filtrelenmesi ve vadeye göre otomaik dolacak faiz oranının atanması
   useEffect(() => {
-    if (selectedTerm) {
-      const termData = loanOptions.find(
-        (loanOptions) => loanOptions.termLoan === parseFloat(selectedTerm)
-      );
-      if (termData) {
-        setRate(termData.interestRate);
-      }
+    console.log('Selected campaign name:', selectedCampaignName);
+    console.log('Selected term:', selectedTerm);
+    if (selectedCampaignName && selectedTerm) {
+      setLoading(true);
+      fetch(`http://localhost:8080/api/campaign/details?campaignName=${selectedCampaignName}&termLoan=${selectedTerm}`)
+      .then((response) => response.json())
+        .then((data) => {
+          const details = data;
+          setRate(details.interestRate); 
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [selectedTerm, loanOptions]);
+  }, [ selectedTerm,selectedCampaignName]);
+
 
   const ageCalculate = () => {
     const today = new Date();
