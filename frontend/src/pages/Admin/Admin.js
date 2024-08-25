@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 import "../../components/layout/Header.css";
+import Alert from "../../components/alert/Alert";
 
 const AdminOperations = () => {
   const [userCampaignDetails, setUserCampaignDetails] = useState([]);
@@ -12,6 +13,9 @@ const AdminOperations = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [users, setUsers] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true); 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState(''); 
 
   const navigate = useNavigate();
 
@@ -72,7 +76,9 @@ const AdminOperations = () => {
       }
     );
     if (response.ok) {
-      alert("Kullanıcı kaydedildi");
+      setAlertMessage("Kullanıcı başarıyla kaydedildi.");
+      setAlertType('success');
+      setShowAlert(true);
       setTimeout(() => {
         window.location.reload();
       }, 500);
@@ -105,7 +111,9 @@ const AdminOperations = () => {
         (i) => i.id !== selectedRow
       );
       setUserCampaignDetails(updatedCampaignDetails);
-      alert("Kullanıcı başarıyla silindi.");
+      setAlertMessage("Kullanıcı başarıyla silindi.");
+      setAlertType('success');
+      setShowAlert(true);
     });
   };
   //yeni kayıta basınca olacak enabled disabled işlemleri
@@ -113,8 +121,15 @@ const AdminOperations = () => {
     setIsDisabled(false);
   };
 
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
+
   return (
     <div className="user-campaign-page-container">
+      {showAlert && (
+        <Alert message={alertMessage} type={alertType} onClose={handleCloseAlert} />
+      )}
       <h1>Kullanıcı Kampanya Bilgileri</h1>
       <div className="user-campaign-button-container">
         <button

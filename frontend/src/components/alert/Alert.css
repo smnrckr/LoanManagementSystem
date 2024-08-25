@@ -7,6 +7,8 @@
   
   .alert-success {
     background-color: #4CAF50; 
+    padding: 50px; 
+    color:#fff
   }
   
   .alert-error {
@@ -23,7 +25,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: transparent;
+    background: #1d67d6;
     border: none;
     color: #fff;
     font-size: 20px;

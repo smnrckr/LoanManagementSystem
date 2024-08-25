@@ -15,12 +15,10 @@ const NewApplication = () => {
   const [rate, setRate] = useState("");
   const [loanOptions, setLoanOptions] = useState([]);
   const [selectedCampaignCode, setSelectedCampaignCode] = useState("");
-  const [alert, setAlert] = useState({ message: '', type: '' });
-
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState(''); // 'success' or 'error'
-
+  const [alertType, setAlertType] = useState(''); 
+  
   const [formData, setFormData] = useState({
     tckn: "",
     phoneNumber: "",
@@ -69,7 +67,7 @@ const NewApplication = () => {
   //kampanya bilgilerinin alınması için
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/api/campaigns")
+    fetch(`http://localhost:8080/api/user/${userCode}/campaigns`)
       .then((response) => {
         return response.json();
       })
@@ -127,7 +125,9 @@ const NewApplication = () => {
       age--;
     }
     if (age < 18) {
-      alert("18 Yaşından Küçüklere Kredi Verilemez!");
+      setAlertMessage("18 Yaşından Küçüklere Kredi Verilemez!");
+      setAlertType('error');
+      setShowAlert(true);
       return false;
     }
     return true;
@@ -159,7 +159,6 @@ const NewApplication = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      // If validation fails, don't submit the form
       return;
     }
     if (!ageCalculate()) {
@@ -194,10 +193,14 @@ const NewApplication = () => {
       }
     );
 
-    const data = await response.json();
-    console.log(data);
     if (response.ok) {
-      navigate(`/loans/${userCode}`);
+      setAlertMessage("Kredi Başvurusu Başarıyla Yapıldı");
+      setAlertType('success');
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate(`/loans/${userCode}`);
+      }, 1000);
+      
     }
   };
 
