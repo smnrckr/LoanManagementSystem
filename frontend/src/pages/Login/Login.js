@@ -24,25 +24,32 @@ const Login = () => {
         }),
       });
 
-      const loginData = await response.json();
-      if(response.ok){
-        if(loginData.userType===1){
-            if(loginData.userCode){
-                navigate(`/loans/${loginData.userCode}`);
-            }else{
-                setLoginError('Kullanıcı adı ya da parola yanlış');
-            }
-
-        }else if(loginData.userType===2){
-            navigate(`/user-campaign-table`);
-        }else{
-            setLoginError("Kullanıcı adı ya da parola yanlış");
-        }
+      if (response.status === 401) {
+        // Handle unauthorized error
+        setLoginError('Kullanıcı adı ya da parola yanlış');
+        return;
       }
-    
-    }catch (error) {
-        console.error('Giriş sırasında hata meydana geldi!', error);
+  
+      if (!response.ok) {
+        // Handle other errors
         setLoginError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+        return;
+      }
+  
+      const loginData = await response.json();
+      if (loginData.userType === 1) {
+        if (loginData.userCode) {
+          navigate(`/loans/${loginData.userCode}`);
+        } else {
+          setLoginError('Kullanıcı adı ya da parola yanlış');
+        }
+      } else if (loginData.userType === 2) {
+        navigate(`/user-campaign-table`);
+      } else {
+        setLoginError("Kullanıcı adı ya da parola yanlış");
+      }
+    } catch (error) {
+      setLoginError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
     }
 
 };

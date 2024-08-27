@@ -10,8 +10,6 @@ const CreateUser = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userCode, setUserCode] = useState(null);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -60,22 +58,36 @@ const CreateUser = () => {
         }),
       });
 
+      const responseData = await response.json();
       if (response.ok) {
-        const responseData = await response.json();
-        setUserCode(responseData.userCode);
-        setAlertMessage("Kullanıcı Başarıyla Yapıldı");
+        setAlertMessage("Kullanıcı Başarıyla Oluşturuldu");
         setAlertType("success");
         setShowAlert(true);
         setTimeout(() => {
           navigate("/");
         }, 1000);
       } else {
-        console.error("Unexpected response status:", response.status);
-        setError("Kullanıcı oluşturulamadı.");
+        const errorCode = responseData.errorCode;
+        let errorMessage = "Kullanıcı oluşturulamadı.";
+        
+        switch (errorCode) {
+          case "TCKN_VKN_DUPLICATE":
+            errorMessage = "Bu TCKN/VKN kullanılmaktadır!";
+            break;
+          case "EMAIL_DUPLICATE":
+            errorMessage = "Bu email kullanılmaktadır!";
+            break;
+          default:
+            errorMessage = "Bilinmeyen bir hata meydana geldi.";
+            break;
+        }
+        
+        setAlertMessage(errorMessage);
+        setAlertType("error");
+        setShowAlert(true);
       }
     } catch (error) {
       console.error("Error occurred during registration:", error);
-      setError("Kullanıcı oluşturulurken bir hata meydana geldi.");
     }
   };
 
@@ -128,9 +140,7 @@ const CreateUser = () => {
         <button className="register-button" type="submit">
           Kaydet
         </button>
-      </form>
-      {userCode && <p>Kullanıcı Kodu: {userCode}</p>}
-      {error && <p className="error">{error}</p>}
+      </form> 
     </div>
   );
 };
