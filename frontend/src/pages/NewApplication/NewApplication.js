@@ -4,6 +4,8 @@ import "./NewApplication.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Alert from "../../components/alert/Alert";
+import { newApplication,distinctNames,campaign_details,campaign_terms } from '../../services/api/apiUrl';
+
 
 const NewApplication = () => {
   const { userCode } = useParams();
@@ -11,14 +13,12 @@ const NewApplication = () => {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
   const [selectedCampaign, setSelectedCampaign] = useState("");
-  const [selectedCampaignName, setSelectedCampaignName] = useState("");
   const [selectedTerm, setSelectedTerm] = useState("");
   const [rate, setRate] = useState("");
   const [loanOptions, setLoanOptions] = useState([]);
-  const [selectedCampaignCode, setSelectedCampaignCode] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState(''); 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
 
   const [formData, setFormData] = useState({
     tckn: "",
@@ -36,21 +36,23 @@ const NewApplication = () => {
   const validateForm = () => {
     const isTcknValid = /^\d{11}$/.test(formData.tckn);
     if (!isTcknValid) {
-      setAlertMessage('Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!');
-      setAlertType('error');
+      setAlertMessage("Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!");
+      setAlertType("error");
       setShowAlert(true);
       return;
     }
 
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailClient);
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      formData.emailClient
+    );
     if (!isEmailValid) {
-      setAlertMessage('Girdiğiniz Email Formatı Geçersizdir!');
-      setAlertType('error');
+      setAlertMessage("Girdiğiniz Email Formatı Geçersizdir!");
+      setAlertType("error");
       setShowAlert(true);
       return;
     }
 
-    return(true);
+    return true;
   };
 
   const handleCloseAlert = () => {
@@ -59,105 +61,49 @@ const NewApplication = () => {
   const formatDate = (date) => {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0"); 
+    const month = String(d.getMonth() + 1).padStart(2, "0");
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
   };
 
-  // //kampanya bilgilerinin alınması için
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch(`http://localhost:8080/api/user/${userCode}/campaigns`)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => setCampaigns(data))
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // }, [userCode, navigate]);
-
-  // //comboboxa atılacak kampanya isimlerinin seçilmesiyle detayların filtrelenmesi
-  // useEffect(() => {
-  //   if (selectedCampaign) {
-  //     const filteredCampaign = campaigns.find(
-  //       (campaign) => campaign.campaignName === selectedCampaign
-  //     );
-
-  //     if (filteredCampaign) {
-  //       setSelectedCampaignCode(filteredCampaign.campaignCode);
-
-  //       const filteredTerms = campaigns
-  //         .filter((campaign) => campaign.campaignName === selectedCampaign)
-  //         .map((campaign) => ({
-  //           termLoan: campaign.termLoan,
-  //           interestRate: campaign.interestRate,
-  //           campaignCode: campaign.campaignCode,
-  //         }));
-  //       setLoanOptions(filteredTerms);
-  //     }
-  //   }
-  //   setSelectedTerm("");
-  //   setRate("");
-  // }, [selectedCampaign, campaigns]);
-
-  // //vadenin filtrelenmesi ve vadeye göre otomaik dolacak faiz oranının atanması
-  // useEffect(() => {
-  //   if (selectedTerm) {
-  //     const termData = loanOptions.find(
-  //       (loanOptions) => loanOptions.termLoan === parseFloat(selectedTerm)
-  //     );
-  //     if (termData) {
-  //       setRate(termData.interestRate);
-  //     }
-  //   }
-  // }, [selectedTerm, loanOptions]);
-
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/api/user/${userCode}/campaigns`)
+    fetch(distinctNames.replace(':userCode', userCode))
       .then((response) => response.json())
-      .then((data) => setCampaigns(data.dataList))
+      .then((data) => setCampaigns(data))
       .finally(() => {
         setLoading(false);
       });
   }, [userCode]);
 
   useEffect(() => {
-    console.log('Fetching loan options for:', selectedCampaign);
     if (selectedCampaign) {
       setLoading(true);
-      fetch(`http://localhost:8080/api/details/${selectedCampaign}`)
+      fetch(campaign_details(selectedCampaign))
         .then((response) => response.json())
         .then((data) => {
-          console.log('Loan options fetched:', data.dataList);
-          const campaignName = data.dataList[1].campaignName; 
-          setSelectedCampaignName(campaignName);
-          setLoanOptions(data.dataList); 
+          setLoanOptions(data.dataList);
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [selectedCampaign, selectedCampaignName]);
+  }, [selectedCampaign]);
 
   useEffect(() => {
-    console.log('Selected campaign name:', selectedCampaignName);
-    console.log('Selected term:', selectedTerm);
-    if (selectedCampaignName && selectedTerm) {
+    if (selectedCampaign && selectedTerm) {
       setLoading(true);
-      fetch(`http://localhost:8080/api/campaign/details?campaignName=${selectedCampaignName}&termLoan=${selectedTerm}`)
-      .then((response) => response.json())
+      fetch(campaign_terms(selectedCampaign,selectedTerm))
+        .then((response) => response.json())
         .then((data) => {
           const details = data;
-          setRate(details.interestRate); 
+          setRate(details.interestRate);
         })
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [ selectedTerm,selectedCampaignName]);
-
+  }, [selectedTerm, selectedCampaign]);
 
   const ageCalculate = () => {
     const today = new Date();
@@ -172,7 +118,7 @@ const NewApplication = () => {
     }
     if (age < 18) {
       setAlertMessage("18 Yaşından Küçüklere Kredi Verilemez!");
-      setAlertType('error');
+      setAlertType("error");
       setShowAlert(true);
       return false;
     }
@@ -218,8 +164,7 @@ const NewApplication = () => {
     const unformattedLoanAmount = parseFloat(
       formData.loanAmount.replace(/\./g, "").replace(",", ".")
     );
-    const response = await fetch(
-      `http://localhost:8080/api/newApplication/${userCode}`,
+    const response = await  fetch(newApplication(userCode),
       {
         method: "POST",
         headers: {
@@ -232,7 +177,6 @@ const NewApplication = () => {
           campaignName: selectedCampaign,
           termLoan: selectedTerm,
           interestRate: rate,
-          campaignCode: selectedCampaignCode,
           monthlySalary: unformattedSalary,
           loanAmount: unformattedLoanAmount,
         }),
@@ -241,27 +185,24 @@ const NewApplication = () => {
 
     if (response.ok) {
       setAlertMessage("Kredi Başvurusu Başarıyla Yapıldı");
-      setAlertType('success');
+      setAlertType("success");
       setShowAlert(true);
       setTimeout(() => {
         navigate(`/loans/${userCode}`);
       }, 1000);
-      
     }
   };
-
-  //kampanya isilerinin bir kere çıkması için
-  //service
-  const uniqueCampaignNames = [
-    ...new Set(campaigns.map((campaign) => campaign.campaignName)),
-  ];
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="new-app-cointainer">
       {showAlert && (
-        <Alert message={alertMessage} type={alertType} onClose={handleCloseAlert} />
+        <Alert
+          message={alertMessage}
+          type={alertType}
+          onClose={handleCloseAlert}
+        />
       )}
       <h1> KREDI BAŞVURUSU</h1>
       <div className="form-section-parent">
@@ -379,7 +320,7 @@ const NewApplication = () => {
                 onChange={(e) => setSelectedCampaign(e.target.value)}
               >
                 <option value="">Bir Kampanya Seçin</option>
-                {uniqueCampaignNames.map((campaignName, index) => (
+                {campaigns.map((campaignName, index) => (
                   <option key={index} value={campaignName}>
                     {campaignName}
                   </option>

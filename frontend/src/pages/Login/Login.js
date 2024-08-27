@@ -1,6 +1,8 @@
 import React, {useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import { login } from '../../services/api/apiUrl';
+
 
 const Login = () => {
   const [tcknVkn, setTcknVkn] = useState('');
@@ -11,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8080/api/login`, {
+      const response = await fetch(login, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

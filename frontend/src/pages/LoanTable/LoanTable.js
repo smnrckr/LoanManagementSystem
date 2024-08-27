@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./LoanTable.css";
+import { loans } from '../../services/api/apiUrl';
+ 
 
 const LoanTable = () => {
   const { userCode } = useParams();
   const navigate = useNavigate();
-  const [borrowerData, setBorrowerData] = useState([]);
+  const [clientData, setclientData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -15,9 +17,9 @@ const LoanTable = () => {
     }
 
     setLoading(true);
-    fetch(`http://localhost:8080/api/loans/${userCode}`)
+    fetch(loans(userCode))
       .then((response) => response.json())
-      .then((json) => setBorrowerData(json))
+      .then((json) => setclientData(json))
       .catch((error) => {
         console.error("Error fetching loan data:", error);
       })
@@ -64,20 +66,20 @@ const LoanTable = () => {
               </tr>
             </thead>
             <tbody>
-              {borrowerData.map((borrower) => (
-                <tr key={borrower.id}>
-                  <td>{borrower.tckn}</td>
-                  <td>{borrower.phoneNumber}</td>
-                  <td>{borrower.name}</td>
-                  <td>{borrower.surname}</td>
-                  <td>{borrower.emailClient}</td>
-                  <td>{borrower.address}</td>
-                  <td>{borrower.monthlySalary.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
-                  <td>{borrower.campaignName}</td>
-                  <td>{borrower.loanDate}</td>
-                  <td>{borrower.loanAmount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
-                  <td>{borrower.interestRate}</td>
-                  <td>{borrower.termLoan}</td>
+              {clientData.map((client) => (
+                <tr key={client.id}>
+                  <td>{client.tckn}</td>
+                  <td>{client.phoneNumber}</td>
+                  <td>{client.name}</td>
+                  <td>{client.surname}</td>
+                  <td>{client.emailClient}</td>
+                  <td>{client.address}</td>
+                  <td>{client.monthlySalary.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
+                  <td>{client.campaignName}</td>
+                  <td>{client.loanDate}</td>
+                  <td>{client.loanAmount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
+                  <td>{client.interestRate}</td>
+                  <td>{client.termLoan}</td>
                 </tr>
               ))}
             </tbody>

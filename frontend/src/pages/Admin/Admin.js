@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 import "../../components/layout/Header.css";
 import Alert from "../../components/alert/Alert";
+import { userList, userCampaignTable,campaignList } from '../../services/api/apiUrl';
+
 
 const AdminOperations = () => {
   const [userCampaignDetails, setUserCampaignDetails] = useState([]);
@@ -22,7 +24,7 @@ const AdminOperations = () => {
   //tabloda verilerin gösterilmesi için
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:8080/api/user-campaign-table`)
+    fetch(userCampaignTable)
       .then((response) => response.json())
       .then((json) => setUserCampaignDetails(json))
       .catch((error) => {
@@ -36,7 +38,7 @@ const AdminOperations = () => {
   //comboboxta kampanya isimlerini ve kodlarını göstermek için
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/api/campaigns")
+    fetch(campaignList)
       .then((response) => {
         return response.json();
       })
@@ -49,7 +51,7 @@ const AdminOperations = () => {
   //comboboxta kullanıcı isim ve kodlarını göstermek için
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8080/api/users")
+    fetch(userList)
       .then((response) => {
         return response.json();
       })
@@ -63,7 +65,7 @@ const AdminOperations = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `http://localhost:8080/api/user-campaign-table`,
+      userCampaignTable,
       {
         method: "POST",
         headers: {
@@ -99,7 +101,7 @@ const AdminOperations = () => {
 
   //delete butonu
   const handleDelete = (id) => {
-    fetch("http://localhost:8080/api/user-campaign-table", {
+    fetch(userCampaignTable, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
