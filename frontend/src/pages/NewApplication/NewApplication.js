@@ -4,8 +4,12 @@ import "./NewApplication.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Alert from "../../components/alert/Alert";
-import { newApplication,distinctNames,campaign_details,campaign_terms } from '../../services/api/apiUrl';
-
+import {
+  newApplication,
+  distinctNames,
+  campaign_details,
+  campaign_terms,
+} from "../../services/api/apiUrl";
 
 const NewApplication = () => {
   const { userCode } = useParams();
@@ -68,16 +72,19 @@ const NewApplication = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(distinctNames.replace(':userCode', userCode))
+    fetch(distinctNames.replace(":userCode", userCode))
       .then((response) => response.json())
       .then((data) => setCampaigns(data))
       .finally(() => {
         setLoading(false);
       });
+    setSelectedCampaign("");
   }, [userCode]);
 
   useEffect(() => {
     if (selectedCampaign) {
+      setSelectedTerm("");
+      setRate("");
       setLoading(true);
       fetch(campaign_details(selectedCampaign))
         .then((response) => response.json())
@@ -87,13 +94,18 @@ const NewApplication = () => {
         .finally(() => {
           setLoading(false);
         });
+    } else {
+      setLoanOptions([]);
+      setSelectedTerm("");
+      setRate("");
     }
   }, [selectedCampaign]);
 
   useEffect(() => {
-    if (selectedCampaign && selectedTerm) {
+    if (selectedTerm) {
+      setRate("");
       setLoading(true);
-      fetch(campaign_terms(selectedCampaign,selectedTerm))
+      fetch(campaign_terms(selectedCampaign, selectedTerm))
         .then((response) => response.json())
         .then((data) => {
           const details = data;
@@ -102,8 +114,11 @@ const NewApplication = () => {
         .finally(() => {
           setLoading(false);
         });
+    }else{
+      setRate("");
+
     }
-  }, [selectedTerm, selectedCampaign]);
+  }, [selectedTerm]);
 
   const ageCalculate = () => {
     const today = new Date();
@@ -164,24 +179,22 @@ const NewApplication = () => {
     const unformattedLoanAmount = parseFloat(
       formData.loanAmount.replace(/\./g, "").replace(",", ".")
     );
-    const response = await  fetch(newApplication(userCode),
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          loanDate: formattedLoanDate,
-          birthDate: formattedBirthDate,
-          campaignName: selectedCampaign,
-          termLoan: selectedTerm,
-          interestRate: rate,
-          monthlySalary: unformattedSalary,
-          loanAmount: unformattedLoanAmount,
-        }),
-      }
-    );
+    const response = await fetch(newApplication(userCode), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...formData,
+        loanDate: formattedLoanDate,
+        birthDate: formattedBirthDate,
+        campaignName: selectedCampaign,
+        termLoan: selectedTerm,
+        interestRate: rate,
+        monthlySalary: unformattedSalary,
+        loanAmount: unformattedLoanAmount,
+      }),
+    });
 
     if (response.ok) {
       setAlertMessage("Kredi Başvurusu Başarıyla Yapıldı");
@@ -204,80 +217,108 @@ const NewApplication = () => {
           onClose={handleCloseAlert}
         />
       )}
-      <h1> KREDI BAŞVURUSU</h1>
+      <h1>KREDİ BAŞVURUSU</h1>
       <div className="form-section-parent">
         <div className="form-section-child">
           <form className="new-app-form">
             <h3
               style={{
                 textAlign: "center",
-                marginBottom: "20px",
+                marginBottom: "30px",
                 color: "#013771",
               }}
             >
               Müşteri Bilgileri
             </h3>
-            <input
-              type="text"
-              placeholder="TCKN"
-              value={formData.tckn}
-              onChange={(e) =>
-                setFormData({ ...formData, tckn: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Telefon"
-              value={formData.phoneNumber}
-              onChange={(e) =>
-                setFormData({ ...formData, phoneNumber: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Ad"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Soyad"
-              value={formData.surname}
-              onChange={(e) =>
-                setFormData({ ...formData, surname: e.target.value })
-              }
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={formData.emailClient}
-              onChange={(e) =>
-                setFormData({ ...formData, emailClient: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Adres"
-              value={formData.address}
-              onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Aylık Gelir"
-              value={formData.monthlySalary}
-              onChange={handleSalaryChange}
-              required
-            />
+            <div className="input-container">
+              <input
+                type="text"
+                id="tckn"
+                placeholder=" "
+                value={formData.tckn}
+                onChange={(e) =>
+                  setFormData({ ...formData, tckn: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="tckn">TCKN</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                id="phoneNumber"
+                placeholder=" "
+                value={formData.phoneNumber}
+                onChange={(e) =>
+                  setFormData({ ...formData, phoneNumber: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="phoneNumber">Telefon</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                id="name"
+                placeholder=" "
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="name">Ad</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                id="surname"
+                placeholder=" "
+                value={formData.surname}
+                onChange={(e) =>
+                  setFormData({ ...formData, surname: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="surname">Soyad</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="email"
+                id="emailClient"
+                placeholder=" "
+                value={formData.emailClient}
+                onChange={(e) =>
+                  setFormData({ ...formData, emailClient: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="emailClient">Email</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                id="address"
+                placeholder=" "
+                value={formData.address}
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
+                required
+              />
+              <label htmlFor="address">Adres</label>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                id="monthlySalary"
+                placeholder=" "
+                value={formData.monthlySalary}
+                onChange={handleSalaryChange}
+                required
+              />
+              <label htmlFor="monthlySalary">Aylık Gelir</label>
+            </div>
           </form>
         </div>
 
@@ -286,33 +327,47 @@ const NewApplication = () => {
             <h3
               style={{
                 textAlign: "center",
-                marginBottom: "20px",
+                marginBottom: "30px",
                 color: "#013771",
               }}
             >
               Kredi Bilgileri
             </h3>
-            <input
-              type="text"
-              placeholder="Kredi Tutarı"
-              value={formData.loanAmount}
-              onChange={handleLoanAmountChange}
-              required
-            />
-            <DatePicker
-              selected={formData.birthDate}
-              placeholderText="Doğum Tarihi"
-              dateFormat="dd/MM/yyyy"
-              onChange={(date) => setFormData({ ...formData, birthDate: date })}
-              required
-            />
-            <DatePicker
-              selected={formData.loanDate}
-              dateFormat="dd/MM/yyyy"
-              placeholderText="Kredi Tarihi"
-              onChange={(date) => setFormData({ ...formData, loanDate: date })}
-              required
-            />
+            <div className="input-container">
+              <input
+                type="text"
+                id="loanAmount"
+                placeholder=" "
+                value={formData.loanAmount}
+                onChange={handleLoanAmountChange}
+                required
+              />
+              <label htmlFor="loanAmount">Kredi Tutarı</label>
+            </div>
+            <div className="input-container">
+              <DatePicker
+                selected={formData.birthDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) =>
+                  setFormData({ ...formData, birthDate: date })
+                }
+                required
+                className="date-picker"
+              />
+              <label className="date-picker-label">Doğum Tarihi</label>
+            </div>
+            <div className="input-container">
+              <DatePicker
+                selected={formData.loanDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) =>
+                  setFormData({ ...formData, loanDate: date })
+                }
+                required
+                className="date-picker"
+              />
+              <label className="date-picker-label">Kredi Tarihi</label>
+            </div>
 
             <div className="combo-style">
               <select
@@ -341,7 +396,7 @@ const NewApplication = () => {
                 </select>
 
                 <input
-                  type="readonly"
+                  type="text"
                   value={rate}
                   readOnly
                   placeholder="Kredi Oranı"

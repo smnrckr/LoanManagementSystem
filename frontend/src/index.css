@@ -29,6 +29,43 @@ input[type="password"] {
   font-size: 14px;
 }
 
+.input-group label {
+  position: absolute;
+  top: 35%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+  background-color: #f9f9f9;
+}
+
+
+.input-group {
+  position: relative;
+  margin-bottom:10px;
+}
+
+.input-group input:focus {
+  border-color: #007bff;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -10px;
+  font-size: 14px;
+  color: #000000;
+}
+
 h1 {
   text-align: center;
   color: #013771;

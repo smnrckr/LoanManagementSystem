@@ -1,3 +1,4 @@
+
 .new-app-cointainer {
   display: flex;
   flex-direction: column;
@@ -9,13 +10,12 @@
 .form-section-parent {
   display: flex;
   justify-content: center;
-  height: 50vh;
+  height: auto; 
 }
 
 .form-section-child {
   display: flex;
   justify-content: center;
-  height: 50vh;
   margin-right: 20px;
 }
 
@@ -32,56 +32,95 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   background-color: #92c7ed;
+  padding-top:20px;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-container label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    color: #aaa;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -20px; 
+  font-size: 14px;
+  color: #807b7b; 
+}
+
+
+.date-picker {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.date-picker-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  color: #aaa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.date-picker:focus + .date-picker-label,
+.date-picker:not(:placeholder-shown) + .date-picker-label {
+  top: -15px;
+  left: 10px;
+  font-size: 12px;
+  color: #007bff;
 }
 
 .combo-style {
-  width: 110%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.combo-style:disabled{
 }
 
 select {
-  width: 101%;
-  padding: 10px;
+  width: 111%;
+  padding: 11px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
-  margin-bottom: 15px;
-
+  margin-bottom: 22px;
 }
-select:disabled{
-  background-color: #ccc;
-}
-
 
 input[readonly] {
-  width: 90%;
-  padding: 10px;
+  background-color: #f9f9f9;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  margin-bottom: 20px;
+  color: #555;
 }
-input:disabled{
-  opacity: 0.7 !important;
-  background-color: #ccc;
-
-}
-
 
 .new-app-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  color: white;
+  padding: 15px 20px;
   background-color: #007bff;
   border: none;
-  border-radius: 10px;
+  color: white;
+  border-radius: 4px;
   cursor: pointer;
-  margin: 20px;
-  margin-left: auto;
+  margin-top: 20px;
+  font-size: 16px;
+ 
+
 }

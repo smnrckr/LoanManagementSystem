@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import Alert from "../../components/alert/Alert";
-import { register } from '../../services/api/apiUrl';
+import { register } from "../../services/api/apiUrl";
 
 const CreateUser = () => {
   const [companyName, setCompanyName] = useState("");
@@ -69,7 +69,7 @@ const CreateUser = () => {
       } else {
         const errorCode = responseData.errorCode;
         let errorMessage = "Kullanıcı oluşturulamadı.";
-        
+
         switch (errorCode) {
           case "TCKN_VKN_DUPLICATE":
             errorMessage = "Bu TCKN/VKN kullanılmaktadır!";
@@ -81,7 +81,7 @@ const CreateUser = () => {
             errorMessage = "Bilinmeyen bir hata meydana geldi.";
             break;
         }
-        
+
         setAlertMessage(errorMessage);
         setAlertType("error");
         setShowAlert(true);
@@ -102,45 +102,66 @@ const CreateUser = () => {
       )}
       <form className="register-form" onSubmit={handleSubmit}>
         <h1>Üye Ol</h1>
-        <input
-          type="text"
-          value={companyName}
-          onChange={(e) => setCompanyName(e.target.value)}
-          placeholder="Firma Adı"
-          required
-        />
-        <input
-          type="text"
-          value={tcknVkn}
-          onChange={(e) => setTcknVkn(e.target.value)}
-          placeholder="TCKN"
-          required
-        />
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Adres"
-          required
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-Mail"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Parola"
-          required
-        />
+
+        <div className="input-group">
+          <input
+            type="text"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            required
+            placeholder=""
+          />
+          <label>Firma Adı</label>
+        </div>
+
+        <div className="input-group">
+          <input
+            type="text"
+            value={tcknVkn}
+            onChange={(e) => setTcknVkn(e.target.value)}
+            required
+            placeholder=""
+          />
+          <label>TCKN</label>
+        </div>
+
+        <div className="input-group">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            placeholder=""
+          />
+          <label>Adres</label>
+        </div>
+
+        <div className="input-group">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder=""
+          />
+          <label>E-Mail</label>
+        </div>
+
+        <div className="input-group">
+          <input
+            placeholder=""
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <label>Parola</label>
+        </div>
+
         <button className="register-button" type="submit">
           Kaydet
         </button>
-      </form> 
+      </form>
     </div>
   );
 };

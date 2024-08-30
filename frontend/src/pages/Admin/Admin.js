@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 import "../../components/layout/Header.css";
 import Alert from "../../components/alert/Alert";
-import { userList, userCampaignTable,campaignList } from '../../services/api/apiUrl';
-
+import {userList, userCampaignTable, campaignList} from "../../services/api/apiUrl";
 
 const AdminOperations = () => {
   const [userCampaignDetails, setUserCampaignDetails] = useState([]);
@@ -14,10 +13,10 @@ const AdminOperations = () => {
   const [selectedCampaignCode, setSelectedCampaignCode] = useState("");
   const [campaigns, setCampaigns] = useState([]);
   const [users, setUsers] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true); 
+  const [isDisabled, setIsDisabled] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState(''); 
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
 
   const navigate = useNavigate();
 
@@ -61,25 +60,21 @@ const AdminOperations = () => {
       });
   }, [navigate]);
 
-  //verileri backende göndermek için
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      userCampaignTable,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userCode: selectedUserCode,
-          campaignCode: selectedCampaignCode,
-        }),
-      }
-    );
+    const response = await fetch(userCampaignTable, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userCode: selectedUserCode,
+        campaignCode: selectedCampaignCode,
+      }),
+    });
     if (response.ok) {
       setAlertMessage("Kullanıcı başarıyla kaydedildi.");
-      setAlertType('success');
+      setAlertType("success");
       setShowAlert(true);
       setTimeout(() => {
         window.location.reload();
@@ -114,7 +109,7 @@ const AdminOperations = () => {
       );
       setUserCampaignDetails(updatedCampaignDetails);
       setAlertMessage("Kullanıcı başarıyla silindi.");
-      setAlertType('success');
+      setAlertType("success");
       setShowAlert(true);
     });
   };
@@ -130,7 +125,11 @@ const AdminOperations = () => {
   return (
     <div className="user-campaign-page-container">
       {showAlert && (
-        <Alert message={alertMessage} type={alertType} onClose={handleCloseAlert} />
+        <Alert
+          message={alertMessage}
+          type={alertType}
+          onClose={handleCloseAlert}
+        />
       )}
       <h1>Kullanıcı Kampanya Bilgileri</h1>
       <div className="user-campaign-button-container">
