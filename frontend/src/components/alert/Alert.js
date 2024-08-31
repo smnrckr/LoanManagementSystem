@@ -1,5 +1,5 @@
 import React from 'react';
-import './Alert.css'; // Uyarı stil dosyası
+import './Alert.css'; 
 
 const Alert = ({ message, type, onClose }) => {
 

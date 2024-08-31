@@ -20,7 +20,6 @@ const AdminOperations = () => {
 
   const navigate = useNavigate();
 
-  //tabloda verilerin gösterilmesi için
   useEffect(() => {
     setLoading(true);
     fetch(userCampaignTable)
@@ -34,7 +33,6 @@ const AdminOperations = () => {
       });
   }, []);
 
-  //comboboxta kampanya isimlerini ve kodlarını göstermek için
   useEffect(() => {
     setLoading(true);
     fetch(campaignList)
@@ -47,7 +45,6 @@ const AdminOperations = () => {
       });
   }, [navigate]);
 
-  //comboboxta kullanıcı isim ve kodlarını göstermek için
   useEffect(() => {
     setLoading(true);
     fetch(userList)
@@ -82,7 +79,6 @@ const AdminOperations = () => {
     }
   };
 
-  //row seçip id'i almak için
   const selectRow = (id) => {
     if (id === selectedRow) {
       setSelectedRow("");
@@ -94,7 +90,6 @@ const AdminOperations = () => {
     }
   };
 
-  //delete butonu
   const handleDelete = (id) => {
     fetch(userCampaignTable, {
       method: "DELETE",
@@ -113,7 +108,6 @@ const AdminOperations = () => {
       setShowAlert(true);
     });
   };
-  //yeni kayıta basınca olacak enabled disabled işlemleri
   const handleNewRecord = () => {
     setIsDisabled(false);
   };
