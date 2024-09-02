@@ -7,8 +7,8 @@ import Alert from "../../components/alert/Alert";
 import {
   newApplication,
   distinctNames,
-  campaign_details,
   campaign_terms,
+  userCampaignTerms
 } from "../../services/api/apiUrl";
 
 const NewApplication = () => {
@@ -43,7 +43,7 @@ const NewApplication = () => {
       setAlertMessage("Geçersiz TCKN. TCKN 11 basamaklı bir sayı olmalıdır!");
       setAlertType("error");
       setShowAlert(true);
-      return;
+      return false;
     }
 
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
@@ -53,7 +53,7 @@ const NewApplication = () => {
       setAlertMessage("Girdiğiniz Email Formatı Geçersizdir!");
       setAlertType("error");
       setShowAlert(true);
-      return;
+      return false;
     }
 
     return true;
@@ -62,44 +62,33 @@ const NewApplication = () => {
   const handleCloseAlert = () => {
     setShowAlert(false);
   };
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
 
   useEffect(() => {
     setLoading(true);
     fetch(distinctNames.replace(":userCode", userCode))
       .then((response) => response.json())
       .then((data) => setCampaigns(data))
-      .finally(() => {
-        setLoading(false);
-      });
-    setSelectedCampaign("");
+      .finally(() => setLoading(false));
   }, [userCode]);
 
   useEffect(() => {
     if (selectedCampaign) {
-      setSelectedTerm("");
+      setLoanOptions([]);
       setRate("");
+      setSelectedTerm(""); 
       setLoading(true);
-      fetch(campaign_details(selectedCampaign))
+      fetch(userCampaignTerms(userCode, selectedCampaign))
         .then((response) => response.json())
         .then((data) => {
-          setLoanOptions(data.dataList);
+          console.log(data);
+          setLoanOptions(Array.isArray(data) ? data : []); 
         })
-        .finally(() => {
-          setLoading(false);
-        });
+        .finally(() => setLoading(false));
     } else {
       setLoanOptions([]);
-      setSelectedTerm("");
       setRate("");
     }
-  }, [selectedCampaign]);
+  }, [selectedCampaign, userCode]);
 
   useEffect(() => {
     if (selectedTerm) {
@@ -107,37 +96,21 @@ const NewApplication = () => {
       setLoading(true);
       fetch(campaign_terms(selectedCampaign, selectedTerm))
         .then((response) => response.json())
-        .then((data) => {
-          const details = data;
-          setRate(details.interestRate);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }else{
+        .then((data) => setRate(data.interestRate))
+        .finally(() => setLoading(false));
+    } else {
       setRate("");
+    }
+  }, [selectedTerm]); 
+  
 
-    }
-  }, [selectedTerm]);
-
-  const ageCalculate = () => {
-    const today = new Date();
-    const inputBirthDate = new Date(formData.birthDate);
-    let age = today.getFullYear() - inputBirthDate.getFullYear();
-    const monthDifference = today.getMonth() - inputBirthDate.getMonth();
-    if (
-      monthDifference < 0 ||
-      (monthDifference === 0 && today.getDate() < inputBirthDate.getDate())
-    ) {
-      age--;
-    }
-    if (age < 18) {
-      setAlertMessage("18 Yaşından Küçüklere Kredi Verilemez!");
-      setAlertType("error");
-      setShowAlert(true);
-      return false;
-    }
-    return true;
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
   const formatCurrency = (number) => {
@@ -165,12 +138,8 @@ const NewApplication = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) {
-      return;
-    }
-    if (!ageCalculate()) {
-      return;
-    }
+    if (!validateForm()) return;
+
     const formattedLoanDate = formatDate(formData.loanDate);
     const formattedBirthDate = formatDate(formData.birthDate);
     const unformattedSalary = parseFloat(
@@ -179,30 +148,42 @@ const NewApplication = () => {
     const unformattedLoanAmount = parseFloat(
       formData.loanAmount.replace(/\./g, "").replace(",", ".")
     );
-    const response = await fetch(newApplication(userCode), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formData,
-        loanDate: formattedLoanDate,
-        birthDate: formattedBirthDate,
-        campaignName: selectedCampaign,
-        termLoan: selectedTerm,
-        interestRate: rate,
-        monthlySalary: unformattedSalary,
-        loanAmount: unformattedLoanAmount,
-      }),
-    });
 
-    if (response.ok) {
-      setAlertMessage("Kredi Başvurusu Başarıyla Yapıldı");
-      setAlertType("success");
+    try {
+      const response = await fetch(newApplication(userCode), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          loanDate: formattedLoanDate,
+          birthDate: formattedBirthDate,
+          campaignName: selectedCampaign,
+          termLoan: selectedTerm,
+          interestRate: rate,
+          monthlySalary: unformattedSalary,
+          loanAmount: unformattedLoanAmount,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        setAlertMessage(errorText);
+        setAlertType("error");
+        setShowAlert(true);
+      } else {
+        setAlertMessage("Kredi Başvurusu Başarıyla Yapıldı");
+        setAlertType("success");
+        setShowAlert(true);
+        setTimeout(() => {
+          navigate(`/loans/${userCode}`);
+        }, 1000);
+      }
+    } catch (error) {
+      setAlertMessage("Bir hata oluştu. Lütfen tekrar deneyin.");
+      setAlertType("error");
       setShowAlert(true);
-      setTimeout(() => {
-        navigate(`/loans/${userCode}`);
-      }, 1000);
     }
   };
 
@@ -346,6 +327,7 @@ const NewApplication = () => {
             </div>
             <div className="input-container">
               <DatePicker
+                placeholderText="Doğum Tarihi"
                 selected={formData.birthDate}
                 dateFormat="dd/MM/yyyy"
                 onChange={(date) =>
@@ -354,21 +336,21 @@ const NewApplication = () => {
                 required
                 className="date-picker"
               />
-              <label className="date-picker-label">Doğum Tarihi</label>
             </div>
             <div className="input-container">
-              <DatePicker
-                selected={formData.loanDate}
-                dateFormat="dd/MM/yyyy"
-                onChange={(date) =>
-                  setFormData({ ...formData, loanDate: date })
-                }
-                required
-                className="date-picker"
-              />
-              <label className="date-picker-label">Kredi Tarihi</label>
+              <div className="date-picker-wrapper">
+                <DatePicker
+                  selected={formData.loanDate}
+                  placeholderText="Kredi Tarihi"
+                  dateFormat="dd/MM/yyyy"
+                  onChange={(date) =>
+                    setFormData({ ...formData, loanDate: date })
+                  }
+                  required
+                  className="date-picker"
+                />
+              </div>
             </div>
-
             <div className="combo-style">
               <select
                 value={selectedCampaign}
@@ -388,9 +370,9 @@ const NewApplication = () => {
                   disabled={!selectedCampaign}
                 >
                   <option value="">Vade Seçimi Yapın</option>
-                  {loanOptions.map((loanOption, index) => (
-                    <option key={index} value={loanOption.termLoan}>
-                      {loanOption.termLoan}
+                  {loanOptions.map((term, index) => (
+                    <option key={index} value={term}>
+                      {term}
                     </option>
                   ))}
                 </select>

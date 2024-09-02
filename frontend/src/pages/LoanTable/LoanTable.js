@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./LoanTable.css";
 import { loans } from '../../services/api/apiUrl';
  
-
 const LoanTable = () => {
   const { userCode } = useParams();
   const navigate = useNavigate();
@@ -78,8 +77,8 @@ const LoanTable = () => {
                   <td>{client.campaignName}</td>
                   <td>{client.loanDate}</td>
                   <td>{client.loanAmount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} TL</td>
-                  <td>{client.interestRate}</td>
-                  <td>{client.termLoan}</td>
+                  <td style={{ textAlign: "center" }}>{client.interestRate}</td>
+                  <td style={{ textAlign: "center" }}>{client.termLoan}</td>
                 </tr>
               ))}
             </tbody>

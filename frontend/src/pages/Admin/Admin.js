@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 import "../../components/layout/Header.css";
 import Alert from "../../components/alert/Alert";
-import {userList, userCampaignTable, campaignList} from "../../services/api/apiUrl";
+import {
+  userList,
+  userCampaignTable,
+  campaignList,
+} from "../../services/api/apiUrl";
 
 const AdminOperations = () => {
   const [userCampaignDetails, setUserCampaignDetails] = useState([]);
@@ -184,23 +188,28 @@ const AdminOperations = () => {
             onChange={(e) => setSelectedUserCode(e.target.value)}
           >
             <option value="">Kullanıcı</option>
-            {users.map((user, index) => (
-              <option key={index} value={user.userCode}>
-                {user.companyName} - {user.userCode}
-              </option>
-            ))}
+            {users
+              .sort((a, b) => a.companyName.localeCompare(b.companyName))
+              .map((user, index) => (
+                <option key={index} value={user.userCode}>
+                  {user.companyName} - {user.userCode}
+                </option>
+              ))}
           </select>
+
           <select
             className="admin-select"
             value={selectedCampaignCode}
             onChange={(e) => setSelectedCampaignCode(e.target.value)}
           >
             <option value="">Kampanya</option>
-            {campaigns.map((campaign, index) => (
-              <option key={index} value={campaign.campaignCode}>
-                {campaign.campaignName} - {campaign.campaignCode}
-              </option>
-            ))}
+            {campaigns
+              .sort((a, b) => a.campaignName.localeCompare(b.campaignName))
+              .map((campaign, index) => (
+                <option key={index} value={campaign.campaignCode}>
+                  {campaign.campaignName} - {campaign.campaignCode}
+                </option>
+              ))}
           </select>
           <button
             className="user-campaign-button"
