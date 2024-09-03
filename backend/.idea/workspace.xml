@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0a31e6c3-12cb-4478-a29f-c0f706e84d9f" name="Changes" comment="Moved project files into backend directory">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/LoanManagementSystemApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/controllers/CampaignController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/controllers/LoanController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/controllers/UserCampaignController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/controllers/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/CampaignDataDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/CampaignTableDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/UserCampaignDeleteRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/UserCampaignRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/UserCampaignTableResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/UserLoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/dto/UserLoginResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/entities/Campaign.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/entities/Loan.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/entities/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/entities/UserCampaign.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/repos/CampaignRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/repos/LoanRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/repos/UserCampaignRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/repos/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/services/CampaignService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/services/LoanService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/services/UserCampaignService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/loanmanagementsystem/services/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/project/loanmanagementsystem/LoanManagementSystemApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/LoanManagementSystem.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/ttlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/alert/Alert.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/alert/Alert.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Header.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/layout/Header.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/Admin.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Admin/Admin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoanTable/LoanTable.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoanTable/LoanTable.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login/Login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login/Login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/NewApplication/NewApplication.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/NewApplication/NewApplication.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Register/Register.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Register/Register.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api/apiUrl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api/useApi.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/workspace.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Semanur Çakır &lt;semanurcakir11@gmail.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;smnrckr&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/smnrckr/LoanManagementSystem.git&quot;,
+    &quot;accountId&quot;: &quot;fe78cfad-db54-4881-a55d-a681e7ebc3b3&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2lYcdfRL9WgUnIkordCM5hMxOQQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.LoanManagementSystemApplication.executor": "Run",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/sema_/IdeaProjects/LoanManagementSystem/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="LoanManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="LoanManagementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.project.loanmanagementsystem.LoanManagementSystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0a31e6c3-12cb-4478-a29f-c0f706e84d9f" name="Changes" comment="" />
+      <created>1725360541487</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725360541487</updated>
+      <workItem from="1725360543896" duration="46000" />
+      <workItem from="1725360601589" duration="139000" />
+      <workItem from="1725360772881" duration="71000" />
+      <workItem from="1725361271405" duration="1461000" />
+      <workItem from="1725363509015" duration="49000" />
+      <workItem from="1725363683670" duration="5777000" />
+    </task>
+    <task id="LOCAL-00001" summary="Moved project files into backend directory">
+      <option name="closed" value="true" />
+      <created>1725364666838</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1725364666841</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Moved project files into backend directory">
+      <option name="closed" value="true" />
+      <created>1725364754280</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725364754280</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Moved project files into backend directory">
+      <option name="closed" value="true" />
+      <created>1725365345114</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1725365345114</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Reapply &quot;Moved project files into backend directory&quot;&#10;&#10;This reverts commit 87445b3535135f773c3defd78ec6330874ab3dd2.">
+      <option name="closed" value="true" />
+      <created>1725366474562</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725366474563</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Moved project files into backend directory" />
+    <MESSAGE value="Reapply &quot;Moved project files into backend directory&quot;&#10;&#10;This reverts commit 87445b3535135f773c3defd78ec6330874ab3dd2." />
+    <option name="LAST_COMMIT_MESSAGE" value="Reapply &quot;Moved project files into backend directory&quot;&#10;&#10;This reverts commit 87445b3535135f773c3defd78ec6330874ab3dd2." />
+  </component>
+</project>
