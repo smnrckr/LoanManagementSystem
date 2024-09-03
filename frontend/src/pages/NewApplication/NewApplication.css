@@ -1,0 +1,136 @@
+.new-app-cointainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.form-section-parent {
+  display: flex;
+  justify-content: center;
+  height: auto;
+}
+
+.form-section-child {
+  display: flex;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.form-section-child:last-child {
+  margin-right: 10px;
+}
+
+.new-app-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  padding: 50px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #92c7ed;
+  padding-top: 20px;
+}
+
+.input-container {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-container label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  color: #aaa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: -20px;
+  font-size: 14px;
+  color: #807b7b;
+}
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}
+.date-picker-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 14px;
+  color: #aaa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.date-picker:focus + .date-picker-label,
+.date-picker:not(:placeholder-shown) + .date-picker-label {
+  top: -15px;
+  left: 10px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.date-picker-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.date-picker {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.combo-style {
+  display: flex;
+  flex-direction: column;
+}
+
+select {
+  width: 111%;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 22px;
+}
+
+input[readonly] {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  color: #555;
+  
+}
+input[disabled] {
+  opacity: 0.7;            
+
+}
+.new-app-button {
+  padding: 15px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 16px;
+}
