@@ -7,8 +7,8 @@ import Alert from "../../components/alert/Alert";
 import {
   newApplication,
   distinctNames,
-  campaign_terms,
-  userCampaignTerms
+  userCampaignTerms,
+  campaign_rates
 } from "../../services/api/apiUrl";
 
 const NewApplication = () => {
@@ -94,7 +94,7 @@ const NewApplication = () => {
     if (selectedTerm) {
       setRate("");
       setLoading(true);
-      fetch(campaign_terms(selectedCampaign, selectedTerm))
+      fetch(campaign_rates(selectedCampaign, selectedTerm))
         .then((response) => response.json())
         .then((data) => setRate(data.interestRate))
         .finally(() => setLoading(false));
