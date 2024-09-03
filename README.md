@@ -128,5 +128,10 @@ The Admin Operations page is a special interface within the application that all
 - User Management: The system includes comprehensive user registration and login functionalities with robust security checks to prevent duplicate entries.
 - Admin Operations: Administrators have a dedicated interface for managing user-campaign associations, making it easy to assign or remove campaigns for users.
 
+![login-screen](https://github.com/user-attachments/assets/2dfd6cdb-9d64-44b3-b53a-564e5c93037e)
+![register-screen](https://github.com/user-attachments/assets/cd022553-e1c8-4939-8ba9-d90871aa94df)
+![loan-table-screen](https://github.com/user-attachments/assets/b2bb3055-9056-4974-9b1e-d8b4d1eba339)
+![new-application-screen](https://github.com/user-attachments/assets/aa67611a-90a7-4403-9504-0c15de2f6c31)
+![admin-operations-screen](https://github.com/user-attachments/assets/2d327597-cf08-4b27-add0-18e10a96d3ea)
 
 
